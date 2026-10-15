@@ -1,0 +1,593 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>AquaReach Dispatch Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: operations console. Top bar + control strip, map left (the stage), decision column right, outcome strip below. */
+:root{
+  --bg:#e9eef1; --panel:#ffffff; --panel-2:#f4f7f9; --ink:#0d1b25; --ink-2:#4b5c69; --ink-3:#7d8b96; --line:#d3dce2;
+  --accent:#0a67bd; --accent-ink:#ffffff; --accent-soft:#e0edf9;
+  --land:#dfe7ec; --land-2:#d3dde4; --river:#8fbfe6; --road:#f7fafb; --route:#a9b8c3;
+  --ok:#1b8f5a; --ok-soft:#ddf2e7; --warn:#c77d00; --warn-soft:#fbefd6; --crit:#cf2f27; --crit-soft:#fbe1df;
+  --manual:#7445c0; --manual-soft:#eee6fa;
+  --s-fcfs:#e0622f; --s-near:#8a949c; --s-aqua:#0a67bd;
+  --shadow:0 1px 2px rgba(13,27,37,.06),0 4px 16px rgba(13,27,37,.06);
+  --f-display:"Archivo","Arial Narrow",Arial,sans-serif; --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#09121a; --panel:#0f1b25; --panel-2:#132230; --ink:#e6edf2; --ink-2:#9aabb8; --ink-3:#6c7e8c; --line:#21323f;
+  --accent:#4ea2ef; --accent-ink:#06121c; --accent-soft:#11314d;
+  --land:#122230; --land-2:#16293a; --river:#1f557f; --road:#1b2d3c; --route:#2f4556;
+  --ok:#3cc184; --ok-soft:#10301f; --warn:#f0aa2c; --warn-soft:#33260a; --crit:#f2584e; --crit-soft:#3a1513;
+  --manual:#a888f2; --manual-soft:#251b3d; --s-fcfs:#f07a48; --s-near:#8796a2; --s-aqua:#4ea2ef;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#09121a; --panel:#0f1b25; --panel-2:#132230; --ink:#e6edf2; --ink-2:#9aabb8; --ink-3:#6c7e8c; --line:#21323f;
+  --accent:#4ea2ef; --accent-ink:#06121c; --accent-soft:#11314d;
+  --land:#122230; --land-2:#16293a; --river:#1f557f; --road:#1b2d3c; --route:#2f4556;
+  --ok:#3cc184; --ok-soft:#10301f; --warn:#f0aa2c; --warn-soft:#33260a; --crit:#f2584e; --crit-soft:#3a1513;
+  --manual:#a888f2; --manual-soft:#251b3d; --s-fcfs:#f07a48; --s-near:#8796a2; --s-aqua:#4ea2ef;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25); color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.45;margin:0}
+.wrap{padding-inline:16px;padding-block:14px 20px;max-width:1680px;margin:0 auto;display:grid;gap:12px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+
+/* top bar */
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.mark{width:38px;height:38px;border-radius:10px;background:var(--accent);display:grid;place-items:center;flex:none}
+.brand h1{font-family:var(--f-display);font-stretch:112%;font-weight:800;font-size:22px;letter-spacing:-.01em;margin:0;line-height:1}
+.brand p{margin:3px 0 0;color:var(--ink-2);font-size:12.5px}
+.incident{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:var(--panel);border:1px solid var(--line);font-size:12.5px;color:var(--ink-2);white-space:nowrap}
+.chip b{color:var(--ink);font-weight:600}
+.chip.live{border-color:var(--crit);color:var(--crit);background:var(--crit-soft)}
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+.chip.live .dot{animation:blink 1.4s infinite}
+@keyframes blink{50%{opacity:.25}}
+.chip.synth{border-style:dashed}
+.btn-demo{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:10px;border:0;background:var(--ink);color:var(--bg);font-weight:600;font-size:13.5px}
+.btn-demo.on{background:var(--crit);color:#fff}
+
+/* control strip */
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 14px;box-shadow:var(--shadow)}
+.seg{display:inline-flex;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;padding:7px 12px;border-radius:7px;font-size:13px;font-weight:500;color:var(--ink-2);display:inline-flex;align-items:center;gap:7px}
+.seg button[aria-pressed="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.seg button .sw{width:10px;height:3px;border-radius:2px}
+.seg.strat button[aria-pressed="true"][data-s="aquareach"]{background:var(--accent);color:var(--accent-ink)}
+.play{width:38px;height:38px;border-radius:50%;border:0;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;flex:none}
+.clock{display:flex;flex-direction:column;line-height:1.1;min-width:150px}
+.clock .big{font-family:var(--f-mono);font-size:22px;font-weight:600;letter-spacing:-.02em}
+.clock .sub{font-size:12px;color:var(--ink-3)}
+.scrub{flex:1 1 260px;display:flex;align-items:center;gap:10px;min-width:200px}
+.scrub input{flex:1;accent-color:var(--accent);min-width:0}
+.ctl-group{display:flex;align-items:center;gap:8px}
+
+/* main grid */
+.main{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:12px;align-items:start}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);min-width:0}
+.card-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:12px 14px 0}
+.card-h h2{font-family:var(--f-display);font-stretch:105%;font-size:15px;font-weight:700;margin:0;letter-spacing:.005em}
+.mapcard{position:relative;overflow:hidden}
+#map{display:block;width:100%;height:auto}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--ink-2);padding:0 14px 12px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+
+.side{display:grid;gap:12px;align-content:start;min-width:0}
+.queue{list-style:none;margin:0;padding:10px 10px 12px;display:grid;gap:6px}
+.q{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:var(--panel-2);transition:background .3s,border-color .3s}
+.q.first{border-color:var(--accent);background:var(--accent-soft)}
+.q .rk{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;font-family:var(--f-mono);font-weight:600;font-size:13px;background:var(--panel);border:1px solid var(--line)}
+.q.first .rk{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.q .nm{font-weight:600;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.q .why{font-size:12px;color:var(--ink-2);margin-top:1px}
+.q .ov{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:5px 8px;font-size:11.5px;font-weight:600;color:var(--manual);white-space:nowrap}
+.q .ov:hover{border-color:var(--manual);background:var(--manual-soft)}
+.empty{padding:14px;color:var(--ink-3);font-size:13px}
+.flash{animation:flash 1.6s ease 2}
+@keyframes flash{0%,100%{box-shadow:var(--shadow)}50%{box-shadow:0 0 0 4px var(--accent-soft),var(--shadow)}}
+
+.fleet{display:grid;gap:6px;padding:10px 12px 12px}
+.tk{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;font-size:12.5px}
+.tk .id{font-family:var(--f-mono);font-weight:600;font-size:12px;padding:3px 0;border-radius:6px;text-align:center;background:var(--panel-2);border:1px solid var(--line)}
+.tk .st{color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk .st b{color:var(--ink);font-weight:600}
+.tk .eta{font-family:var(--f-mono);font-size:12px;color:var(--ink-3)}
+.tk .bar{grid-column:2/4;height:4px;border-radius:2px;background:var(--panel-2);overflow:hidden;margin-top:-4px}
+.tk .bar i{display:block;height:100%;background:var(--accent);border-radius:2px}
+
+.log{list-style:none;margin:0;padding:8px 12px 12px;display:grid;gap:2px;max-height:176px;overflow:auto}
+.log li{display:grid;grid-template-columns:76px 14px minmax(0,1fr);gap:8px;font-size:12.5px;padding:4px 0;border-bottom:1px dashed var(--line);align-items:start}
+.log li:last-child{border-bottom:0}
+.log .t{font-family:var(--f-mono);color:var(--ink-3);font-size:11.5px;padding-top:1px}
+.log .ic{width:10px;height:10px;border-radius:3px;margin-top:4px}
+.log .tx{color:var(--ink-2)}
+.log .tx b{color:var(--ink);font-weight:600}
+
+/* outcome strip */
+.outcome{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:12px;align-items:start}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi{padding:12px 14px}
+.kpi .v{font-family:var(--f-display);font-stretch:95%;font-weight:700;font-size:32px;line-height:1.05;letter-spacing:-.01em;font-variant-numeric:tabular-nums;margin-top:4px}
+.kpi .v small{font-size:15px;font-weight:600;color:var(--ink-2);margin-left:3px}
+.kpi .cmp{font-size:12px;color:var(--ink-2);margin-top:6px;display:grid;gap:1px}
+.kpi .cmp span{display:flex;justify-content:space-between;gap:8px}
+.kpi .cmp em{font-style:normal;font-family:var(--f-mono);font-size:11.5px;color:var(--ink)}
+.kpi.bad .v{color:var(--crit)} .kpi.good .v{color:var(--ok)}
+.chartcard{padding-bottom:6px}
+.chartcard svg{display:block;width:100%;height:auto}
+
+/* site detail */
+.detail{position:absolute;left:12px;bottom:12px;width:min(330px,calc(100% - 24px));background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:12px 14px;display:grid;gap:8px}
+.detail .hd{display:flex;justify-content:space-between;gap:8px;align-items:start}
+.detail h3{margin:0;font-family:var(--f-display);font-size:16px;font-weight:700;line-height:1.15;text-wrap:balance}
+.detail .kind{font-size:12px;color:var(--ink-2)}
+.detail .x{border:0;background:transparent;color:var(--ink-3);font-size:18px;line-height:1;padding:2px 4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:12.5px}
+.grid2 div{display:flex;flex-direction:column}
+.grid2 span{color:var(--ink-3);font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.grid2 b{font-family:var(--f-mono);font-weight:600;font-size:13px}
+.tankbar{height:10px;border-radius:5px;background:var(--panel-2);border:1px solid var(--line);overflow:hidden}
+.tankbar i{display:block;height:100%;transition:width .2s}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:999px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.warn{background:var(--warn-soft);color:var(--warn)} .pill.crit{background:var(--crit-soft);color:var(--crit)}
+.btn-ov{border:1px solid var(--manual);background:var(--manual-soft);color:var(--manual);border-radius:8px;padding:7px 10px;font-weight:600;font-size:12.5px}
+
+/* caption + toasts */
+.caption{position:absolute;left:50%;top:52px;transform:translateX(-50%);width:min(760px,calc(100% - 24px));background:rgba(9,18,26,.9);color:#fff;border-radius:12px;padding:12px 18px;font-family:var(--f-display);font-stretch:104%;font-size:19px;font-weight:600;line-height:1.3;text-align:center;text-wrap:balance;box-shadow:0 10px 30px rgba(0,0,0,.25);transition:opacity .35s}
+.caption small{display:block;font-family:var(--f-body);font-size:12px;font-weight:500;opacity:.7;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
+.toasts{position:absolute;right:12px;bottom:12px;display:grid;gap:6px;width:min(300px,calc(100% - 24px))}
+.toast{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:10px;padding:8px 12px;font-size:12.5px;box-shadow:var(--shadow);animation:tin .3s ease}
+.toast.manual{border-left-color:var(--manual)} .toast.crit{border-left-color:var(--crit)}
+.toast b{display:block;font-size:12.5px}
+@keyframes tin{from{transform:translateY(8px);opacity:0}}
+.foot{font-size:12px;color:var(--ink-3);display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between}
+.foot b{color:var(--ink-2);font-weight:600}
+
+/* map svg classes */
+.m-land{fill:var(--land)} .m-land2{fill:var(--land-2)} .m-river{fill:none;stroke:var(--river);stroke-linecap:round}
+.m-road{fill:none;stroke:var(--road);stroke-linecap:round}
+.m-route{fill:none;stroke:var(--route);stroke-width:1.5;stroke-dasharray:3 5}
+.m-route.on{stroke:var(--accent);stroke-width:2.5;stroke-dasharray:none;opacity:.8}
+.m-txt{fill:var(--ink);font-family:var(--f-body);font-size:13px;font-weight:600}
+.m-sub{fill:var(--ink-2);font-family:var(--f-mono);font-size:11.5px}
+.m-area{fill:var(--ink-3);font-family:var(--f-display);font-size:12px;font-weight:600;letter-spacing:.18em;opacity:.55}
+.m-halo{paint-order:stroke;stroke:var(--land);stroke-width:4px;stroke-linejoin:round}
+.site{cursor:pointer;outline:none}
+.site:focus-visible .selring{opacity:1;stroke:var(--accent)}
+.site .ring-bg{fill:var(--panel);stroke:var(--line);stroke-width:1}
+.site .lvl{fill:none;stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .15s}
+.site .core{transition:fill .3s}
+.site.sel .selring{opacity:1}
+.selring{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-dasharray:4 3;opacity:0}
+.pulse{fill:none;stroke:var(--crit);stroke-width:2;opacity:0}
+.site.dry .pulse{animation:pulse 1.6s ease-out infinite}
+@keyframes pulse{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.9)}}
+.pulse{transform-box:fill-box;transform-origin:center}
+.tanker rect.body{fill:var(--accent);stroke:var(--panel);stroke-width:1.5}
+.tanker.empty rect.body{fill:var(--panel);stroke:var(--accent);stroke-width:2}
+.tanker.manual rect.body{fill:var(--manual)}
+.tanker text{font-family:var(--f-mono);font-size:10px;font-weight:600;fill:var(--accent-ink)}
+.tanker.empty text{fill:var(--accent)}
+.c-axis{stroke:var(--line);stroke-width:1} .c-grid{stroke:var(--line);stroke-width:1;stroke-dasharray:2 4}
+.c-lbl{fill:var(--ink-3);font-family:var(--f-mono);font-size:10.5px}
+.c-end{font-family:var(--f-body);font-size:11.5px;font-weight:600}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:1100px){.main,.outcome{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:640px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi .v{font-size:26px}.caption{font-size:15px}.detail{position:static;width:auto;margin:0 12px 12px}.clock{min-width:0}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="mark" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2.5c3.6 4.4 6.5 8.2 6.5 11.6A6.5 6.5 0 0 1 5.5 14.1C5.5 10.7 8.4 6.9 12 2.5z" fill="none" stroke="#fff" stroke-width="2"/><path d="M8.5 14.5h7M12 11v7" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <div><h1>AquaReach</h1><p>Emergency water dispatch · decision support</p></div>
+    </div>
+    <div class="incident">
+      <span class="chip live"><span class="dot"></span><b>Incident WS-0417</b> Trunk main burst</span>
+      <span class="chip"><b>8</b> communities · <b id="popTotal">30,100</b> people</span>
+      <span class="chip"><b>3</b> tankers × 10,000 L</span>
+      <span class="chip synth">Synthetic demo data</span>
+      <button class="btn-demo" id="demoBtn"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg><span>Guided demo</span></button>
+    </div>
+  </header>
+
+  <section class="controls" aria-label="Simulation controls">
+    <div class="ctl-group" style="flex-direction:column;align-items:flex-start;gap:4px">
+      <span class="lbl">Dispatch strategy</span>
+      <div class="seg strat" role="group" aria-label="Dispatch strategy">
+        <button data-s="fcfs" aria-pressed="false"><span class="sw" style="background:var(--s-fcfs)"></span>First come, first served</button>
+        <button data-s="nearest" aria-pressed="false"><span class="sw" style="background:var(--s-near)"></span>Nearest first</button>
+        <button data-s="aquareach" aria-pressed="true"><span class="sw" style="background:currentColor"></span>AquaReach</button>
+      </div>
+    </div>
+    <div class="ctl-group">
+      <button class="play" id="playBtn" aria-label="Play"><svg id="playIc" width="16" height="16" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg></button>
+      <div class="clock"><span class="big" id="clock">D1 06:00</span><span class="sub" id="elapsed">T+0.0 h since burst</span></div>
+    </div>
+    <div class="scrub"><span class="lbl">0 h</span><input type="range" id="scrub" min="0" max="479" value="0" step="1" aria-label="Time since burst"><span class="lbl">48 h</span></div>
+    <div class="ctl-group" style="flex-direction:column;align-items:flex-start;gap:4px">
+      <span class="lbl">Speed</span>
+      <div class="seg" id="speed" role="group" aria-label="Playback speed">
+        <button data-v="1" aria-pressed="false">1 h/s</button><button data-v="3" aria-pressed="true">3 h/s</button><button data-v="6" aria-pressed="false">6 h/s</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="main">
+    <section class="card mapcard" aria-label="Service area map">
+      <div class="card-h"><h2>Service area · live status</h2><span class="lbl" id="mapNote">Click a community for details</span></div>
+      <svg id="map" viewBox="0 0 1000 640" role="img" aria-label="Map of affected communities and tankers"></svg>
+      <div class="legend">
+        <span><i style="background:var(--ok)"></i>Water for 6 h+</span>
+        <span><i style="background:var(--warn)"></i>Under 6 h left</span>
+        <span><i style="background:var(--crit)"></i>Dry</span>
+        <span><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="var(--manual-soft)" stroke="var(--manual)"/><path d="M7 3.6v4.2M7 9.6v.6" stroke="var(--manual)" stroke-width="1.6" stroke-linecap="round"/></svg>Residents need help carrying water</span>
+        <span>Ring = water left in tanks</span>
+      </div>
+      <div class="detail" id="detail" hidden></div>
+      <div class="caption" id="caption" hidden></div>
+      <div class="toasts" id="toasts" aria-live="polite"></div>
+    </section>
+
+    <div class="side">
+      <section class="card" id="queueCard">
+        <div class="card-h"><h2 id="queueTitle">Recommended next dispatches</h2><span class="lbl" id="queueSub">Ranked by AquaReach</span></div>
+        <ol class="queue" id="queue"></ol>
+      </section>
+      <section class="card">
+        <div class="card-h"><h2>Fleet</h2><span class="lbl">3 tankers</span></div>
+        <div class="fleet" id="fleet"></div>
+      </section>
+      <section class="card">
+        <div class="card-h"><h2>Event log</h2><span class="lbl" id="logCount"></span></div>
+        <ul class="log" id="log"></ul>
+      </section>
+    </div>
+  </div>
+
+  <div class="outcome">
+    <div class="kpis" id="kpis"></div>
+    <section class="card chartcard">
+      <div class="card-h"><h2>Unmet essential water over time</h2><span class="lbl">person-days</span></div>
+      <svg id="chart" viewBox="0 0 520 190" role="img" aria-label="Cumulative unmet essential water by strategy"></svg>
+    </section>
+  </div>
+
+  <footer class="foot">
+    <span><b>Demo scenario, synthetic data.</b> Essential demand 15 L/person/day (Sphere minimum). Tanker 10,000 L, 25 km/h, 30 min unload, 30 min refill. AquaReach sees tank levels with ±20% error; requests reach the queue 0–4 h late.</span>
+    <span>Across 500 random scenarios: <b>−63%</b> unmet water vs first come, first served · <b>−80%</b> vs nearest first</span>
+  </footer>
+</div>
+
+<script>
+// ===== AquaReach engine (synthetic demo scenario) =====
+const ESSENTIAL_LPD = 15, H = 48, DT = 0.1, STEPS = Math.round(H/DT);
+const SPEED = 25, UNLOAD = 0.5, REFILL = 0.5, TANKER_L = 10000, KM_PER_PX = 0.042;
+const DEPOT = {x: 470, y: 330, name: 'Refill point · Treatment plant'};
+const SITES = [
+ {id:'A', name:'Rumah Pangsa Seri Cempaka', kind:'High-rise flats · 18 floors', x:300, y:150, pop:5000, store:7.2,  vuln:0.32, delay:1.2, err:1.12},
+ {id:'B', name:'Taman Mutiara Hijau',       kind:'Landed housing',            x:640, y:190, pop:4300, store:17.6, vuln:0.10, delay:0.4, err:0.92},
+ {id:'C', name:'Pangsapuri Sri Kasih', kind:'Ageing residents · 10 floors', x:820, y:470, pop:1300, store:6.4,  vuln:0.45, delay:3.6, err:1.05},
+ {id:'D', name:'Kolej Kediaman Bestari',    kind:'University hostel',         x:560, y:420, pop:3400, store:11.2, vuln:0.05, delay:0.2, err:0.95},
+ {id:'E', name:'Pangsapuri Delima',         kind:'Apartments · 12 floors',    x:150, y:400, pop:4700, store:8.8, vuln:0.24, delay:2.4, err:1.08},
+ {id:'F', name:'Taman Saujana Permai',      kind:'Landed housing',            x:390, y:540, pop:5300, store:19.2, vuln:0.12, delay:0.8, err:0.88},
+ {id:'G', name:'Kampung Baru Sentosa',      kind:'Village · scattered homes', x:880, y:120, pop:2300, store:12.8, vuln:0.22, delay:3.0, err:1.15},
+ {id:'H', name:'Flat Sri Kenanga',          kind:'Low-cost flats · 5 floors', x:250, y:560, pop:3800, store:8.0, vuln:0.28, delay:1.8, err:0.9},
+];
+const NTANK = 3;
+function prep(sites){
+  return sites.map(s=>{
+    const dist = Math.hypot(s.x-DEPOT.x, s.y-DEPOT.y)*KM_PER_PX*1.3 + 1;
+    const cap = Math.max(s.pop*15, 6000);
+    return {...s, dist, travel: dist/SPEED, demand: s.pop*ESSENTIAL_LPD/24, cap, reserve0: Math.min(s.pop*s.store, cap)};
+  });
+}
+function urgencyKey(s, R, enroute, curDry){
+  const est = R*s.err + enroute;
+  if (est > 0.8*s.cap) return null;
+  let slack = est <= 1e-6 ? -(curDry + s.travel) : est/s.demand - s.travel;
+  const w = 1 + 2*s.vuln;
+  return {slack, key: (slack>0 ? slack/w : slack*w) + 0.15*s.travel, est};
+}
+function rank(policy, S, st){
+  const out=[];
+  if (policy==='fcfs' || policy==='nearest'){
+    const req = Object.entries(st.requested).map(([i,t])=>({i:+i,t}));
+    req.sort(policy==='fcfs' ? (a,b)=>a.t-b.t : (a,b)=>S[a.i].dist-S[b.i].dist);
+    req.forEach((r,n)=>out.push({i:r.i, why: policy==='fcfs' ? `Request logged ${fmtClock(r.t)} · queue #${n+1}` : `Closest open request · ${S[r.i].dist.toFixed(1)} km`}));
+    return out;
+  }
+  S.forEach((s,i)=>{
+    const u = urgencyKey(s, st.R[i], st.enroute[i], st.curDry[i]);
+    if (!u) return;
+    out.push({i, key:u.key, slack:u.slack, est:u.est});
+  });
+  out.sort((a,b)=>a.key-b.key);
+  out.forEach(o=>{
+    const s=S[o.i]; const h=o.est/s.demand;
+    const parts=[];
+    if (st.R[o.i] <= 1e-6) parts.push(`Dry for ${st.curDry[o.i].toFixed(1)} h`);
+    else parts.push(`Runs out in ${(h*0.8).toFixed(1)}–${(h*1.2).toFixed(1)} h`);
+    if (s.vuln>=0.2) parts.push(`${Math.round(s.vuln*100)}% need help carrying water`);
+    parts.push(`${Math.round(s.travel*60)} min away`);
+    o.why = parts.join(' · ');
+  });
+  return out;
+}
+function fmtClock(t){ const mins=Math.round((t+6)*60), d=Math.floor(mins/1440), h=Math.floor((mins%1440)/60), m=mins%60; return `D${d+1} ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`; }
+function simulate(policy, S, overrides=[]){
+  const n=S.length, R=S.map(s=>s.reserve0), enroute=new Array(n).fill(0), curDry=new Array(n).fill(0), maxDry=new Array(n).fill(0), unmet=new Array(n).fill(0);
+  const freeAt=new Array(NTANK).fill(0); let pending=[]; const requested={}; const trips=[]; const events=[]; let km=0;
+  const snaps=[]; const ov=overrides.slice().sort((a,b)=>a.t-b.t).map(o=>({...o,used:false}));
+  const wasDry=new Array(n).fill(false);
+  for (let k=0;k<STEPS;k++){
+    const t=k*DT;
+    for (let i=0;i<n;i++) if(!(i in requested) && enroute[i]===0 && R[i]<0.5*S[i].cap && t>=S[i].delay) requested[i]=t;
+    pending = pending.filter(e=>{ if(e.arr<=t+1e-9){ const before=R[e.i]; R[e.i]=Math.min(S[e.i].cap,R[e.i]+TANKER_L); enroute[e.i]-=TANKER_L;
+        events.push({t:e.arr, type:'deliver', i:e.i, j:e.j, amt:R[e.i]-before});
+        if (S[e.i].vuln>=0.2) events.push({t:e.arr, type:'assist', i:e.i});
+        return false;} return true; });
+    const st={R,enroute,curDry,requested};
+    const r = rank(policy,S,st);
+    for (let j=0;j<NTANK;j++){
+      if (freeAt[j]>t+1e-9) continue;
+      let pick=null, why='', manual=false;
+      const o=ov.find(o=>!o.used && o.t<=t+1e-9);
+      if (o){ o.used=true; pick=o.i; why='Dispatcher override'; manual=true; }
+      else { const c=r.find(c=>!trips.some(tr=>tr.i===c.i && tr.arr>t)); if(c){pick=c.i; why=c.why;} }
+      if (pick===null) continue;
+      const s=S[pick], dep=t, arr=t+s.travel+UNLOAD, back=arr+s.travel, free=back+REFILL;
+      trips.push({j,i:pick,dep,arr,back,free,why,manual}); events.push({t, type:'dispatch', i:pick, j, why, manual});
+      pending.push({arr, i:pick, j}); enroute[pick]+=TANKER_L; delete requested[pick]; freeAt[j]=free; km+=2*s.dist;
+      const idx=r.findIndex(c=>c.i===pick); if(idx>=0) r.splice(idx,1);
+    }
+    for (let i=0;i<n;i++){
+      const use=S[i].demand*DT; const short=Math.max(0,use-R[i]); R[i]=Math.max(0,R[i]-use); unmet[i]+=short;
+      const dry=R[i]<=1e-6;
+      if (dry && !wasDry[i]) events.push({t, type:'dry', i});
+      if (!dry && wasDry[i]) events.push({t, type:'restored', i});
+      wasDry[i]=dry;
+      curDry[i]=dry?curDry[i]+DT:0; maxDry[i]=Math.max(maxDry[i],curDry[i]);
+    }
+    snaps.push({R:R.slice(), enroute:enroute.slice(), curDry:curDry.slice(), maxDry:maxDry.slice(), requested:{...requested},
+      unmet: unmet.reduce((a,b)=>a+b,0)/15, unmetSite: unmet.map(u=>u/15), km});
+  }
+  events.sort((a,b)=>a.t-b.t);
+  return {snaps, trips, events, unmet: unmet.reduce((a,b)=>a+b,0)/15, maxDry: Math.max(...maxDry), maxDrySite: maxDry.indexOf(Math.max(...maxDry)), unmetSite: unmet.map(u=>u/15), km};
+}
+if (typeof module!=='undefined') module.exports={prep,SITES,simulate,rank,fmtClock,DT,STEPS};
+
+(function(){
+const NS='http://www.w3.org/2000/svg';
+const S=prep(SITES);
+const NAMES={fcfs:'First come, first served',nearest:'Nearest first',aquareach:'AquaReach'};
+const COL={fcfs:'var(--s-fcfs)',nearest:'var(--s-near)',aquareach:'var(--s-aqua)'};
+const state={policy:'aquareach',k:0,playing:false,speed:3,sel:null,overrides:{fcfs:[],nearest:[],aquareach:[]},demo:null};
+const runs={}; for(const p of ['fcfs','nearest','aquareach']) runs[p]=simulate(p,S,[]);
+document.getElementById('popTotal').textContent=S.reduce((a,s)=>a+s.pop,0).toLocaleString('en-US');
+const $=id=>document.getElementById(id);
+const el=(tag,attrs={},parent)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;};
+const fmt=n=>Math.round(n).toLocaleString('en-US');
+
+/* ---------- map ---------- */
+const map=$('map');
+el('rect',{x:0,y:0,width:1000,height:640,class:'m-land'},map);
+[['M0 0 L360 0 L300 120 L120 210 L0 180Z'],['M1000 640 L1000 380 L860 330 L720 520 L760 640Z'],['M520 0 L760 0 L720 90 L560 110Z']].forEach(d=>el('path',{d:d[0],class:'m-land2'},map));
+el('path',{d:'M-10 250 C 120 230, 210 300, 330 280 S 520 200, 620 300 S 800 420, 1010 360',class:'m-river','stroke-width':16,opacity:.55},map);
+el('path',{d:'M620 300 C 680 240, 700 160, 760 60 L 790 -10',class:'m-river','stroke-width':7,opacity:.5},map);
+const rt=el('text',{x:700,y:342,class:'m-area',transform:'rotate(18 700 342)'},map); rt.textContent='SUNGAI DEMO';
+[['M0 470 L1000 430','10'],['M470 -10 L480 650','10'],['M120 -10 C 300 200, 600 380, 1010 600','7'],['M1010 230 C 800 260, 600 200, 360 40','6']].forEach(r=>el('path',{d:r[0],class:'m-road','stroke-width':r[1]},map));
+[['NORTH',190,64],['EAST',900,560],['SOUTH',560,620],['WEST',40,520]].forEach(a=>{const t=el('text',{x:a[1],y:a[2],class:'m-area'},map);t.textContent=a[0];});
+const routes=S.map(s=>el('line',{x1:DEPOT.x,y1:DEPOT.y,x2:s.x,y2:s.y,class:'m-route'},map));
+// depot
+const dg=el('g',{transform:`translate(${DEPOT.x} ${DEPOT.y})`},map);
+el('rect',{x:-20,y:-20,width:40,height:40,rx:9,fill:'var(--ink)'},dg);
+el('path',{d:'M0 -11c4.5 5.4 7.5 9 7.5 12.6a7.5 7.5 0 0 1-15 0C-7.5 -2 -4.5 -5.6 0 -11z',fill:'var(--bg)'},dg);
+const dt=el('text',{x:0,y:38,'text-anchor':'middle',class:'m-txt m-halo'},dg); dt.textContent='Refill point';
+const dt2=el('text',{x:0,y:53,'text-anchor':'middle',class:'m-sub m-halo'},dg); dt2.textContent='Treatment plant';
+// sites
+const siteEls=S.map((s,i)=>{
+  const g=el('g',{class:'site',transform:`translate(${s.x} ${s.y})`,tabindex:0,role:'button','aria-label':s.name},map);
+  const r=13+Math.sqrt(s.pop)/7;
+  el('circle',{r:r+12,class:'selring'},g);
+  el('circle',{r:r,class:'pulse'},g);
+  el('circle',{r:r+5,class:'ring-bg'},g);
+  const C=2*Math.PI*(r+5);
+  const lvl=el('circle',{r:r+5,class:'lvl','stroke-dasharray':C,'stroke-dashoffset':0,transform:'rotate(-90)'},g);
+  const core=el('circle',{r:r-3,class:'core'},g);
+  const id=el('text',{y:5,'text-anchor':'middle','font-family':'var(--f-display)','font-weight':800,'font-size':15,fill:'#fff'},g); id.textContent=s.id;
+  let flag=null;
+  if(s.vuln>=0.2){flag=el('g',{transform:`translate(${r*0.8} ${-r*0.8})`},g);el('circle',{r:8,fill:'var(--manual-soft)',stroke:'var(--manual)','stroke-width':1.5},flag);el('path',{d:'M0 -4v4.6M0 2.6v.8',stroke:'var(--manual)','stroke-width':2,'stroke-linecap':'round'},flag);}
+  const left=s.x>760||s.id==='H'; const anchor=left?'end':'start'; const dx=left?-(r+12):(r+12);
+  const t1=el('text',{x:dx,y:-3,'text-anchor':anchor,class:'m-txt m-halo'},g); t1.textContent=s.name;
+  const t2=el('text',{x:dx,y:13,'text-anchor':anchor,class:'m-sub m-halo'},g);
+  g.addEventListener('click',()=>select(i)); g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select(i);}});
+  return {g,lvl,core,t2,C,r};
+});
+const tankLayer=el('g',{},map);
+const tankEls=[0,1,2].map(j=>{const g=el('g',{class:'tanker'},tankLayer);el('rect',{class:'body',x:-15,y:-9,width:30,height:18,rx:5},g);const t=el('text',{y:3.5,'text-anchor':'middle'},g);t.textContent='T'+(j+1);return g;});
+
+/* ---------- chart ---------- */
+const chart=$('chart'); const CW=520,CH=190,P={l:44,r:92,t:12,b:24};
+let chartMax=1;
+function drawChart(){
+  chart.innerHTML='';
+  chartMax=Math.max(...Object.values(runs).map(r=>r.unmet))*1.08||1;
+  const X=k=>P.l+(k/(STEPS-1))*(CW-P.l-P.r), Y=v=>CH-P.b-(v/chartMax)*(CH-P.t-P.b);
+  const step=chartMax>6000?2000:chartMax>3000?1000:500;
+  for(let v=0;v<=chartMax;v+=step){el('line',{x1:P.l,x2:CW-P.r,y1:Y(v),y2:Y(v),class:v?'c-grid':'c-axis'},chart);const t=el('text',{x:P.l-6,y:Y(v)+3.5,'text-anchor':'end',class:'c-lbl'},chart);t.textContent=v>=1000?(v/1000)+'k':v;}
+  [0,12,24,36,48].forEach(h=>{const t=el('text',{x:X(h/DT===480?479:h/DT),y:CH-6,'text-anchor':'middle',class:'c-lbl'},chart);t.textContent=h+'h';});
+  const order=['nearest','fcfs','aquareach'].sort((a,b)=>(a===state.policy)-(b===state.policy));
+  const ends=[];
+  order.forEach(p=>{
+    const sn=runs[p].snaps; let d='';
+    for(let k=0;k<sn.length;k+=3) d+=(k?'L':'M')+X(k).toFixed(1)+' '+Y(sn[k].unmet).toFixed(1);
+    d+='L'+X(sn.length-1).toFixed(1)+' '+Y(sn[sn.length-1].unmet).toFixed(1);
+    const on=p===state.policy;
+    el('path',{d,fill:'none',stroke:COL[p],'stroke-width':on?3:2,'stroke-linejoin':'round',opacity:on?1:.75},chart);
+    ends.push({p,y:Y(runs[p].unmet),v:runs[p].unmet});
+  });
+  ends.sort((a,b)=>a.y-b.y); for(let i=1;i<ends.length;i++) if(ends[i].y-ends[i-1].y<26) ends[i].y=ends[i-1].y+26;
+  ends.forEach(e=>{const t=el('text',{x:CW-P.r+8,y:e.y-1,class:'c-end',fill:'var(--ink)'},chart);t.textContent=e.p==='aquareach'?'AquaReach':e.p==='fcfs'?'First come':'Nearest';
+    const t2=el('text',{x:CW-P.r+8,y:e.y+12,class:'c-lbl'},chart);t2.textContent=fmt(e.v);
+    el('circle',{cx:CW-P.r+2,cy:e.y-4,r:3.5,fill:COL[e.p]},chart);});
+  const cur=el('line',{id:'cur',y1:P.t,y2:CH-P.b,stroke:'var(--ink)','stroke-width':1,'stroke-dasharray':'3 3'},chart);
+  const dot=el('circle',{id:'curdot',r:4.5,fill:COL[state.policy],stroke:'var(--panel)','stroke-width':2},chart);
+  chart._X=X; chart._Y=Y;
+}
+
+/* ---------- rendering ---------- */
+function statusOf(i,sn){const R=sn.R[i],h=R/S[i].demand; if(R<=1e-6) return {c:'crit',t:'Dry',col:'var(--crit)'}; if(h<6) return {c:'warn',t:'Low',col:'var(--warn)'}; return {c:'ok',t:'Supplied',col:'var(--ok)'};}
+function tripAt(run,j,t){return run.trips.filter(tr=>tr.j===j&&tr.dep<=t+1e-9&&t<tr.free).pop();}
+function render(){
+  const run=runs[state.policy], k=state.k, t=k*DT, sn=run.snaps[k];
+  $('clock').textContent=fmtClock(t); $('elapsed').textContent=`T+${t.toFixed(1)} h since burst`; $('scrub').value=k;
+  // sites
+  S.forEach((s,i)=>{const e=siteEls[i], st=statusOf(i,sn), frac=sn.R[i]/s.cap;
+    e.lvl.setAttribute('stroke',st.col); e.lvl.setAttribute('stroke-dashoffset',e.C*(1-frac)); e.core.setAttribute('fill',st.col);
+    e.g.classList.toggle('dry',st.c==='crit'); e.g.classList.toggle('sel',state.sel===i);
+    const h=sn.R[i]/s.demand; e.t2.textContent= st.c==='crit'?`DRY ${sn.curDry[i].toFixed(1)} h`:`${h.toFixed(1)} h of water`;
+    e.t2.setAttribute('fill',st.c==='crit'?'var(--crit)':'var(--ink-2)');
+  });
+  // tankers + routes
+  routes.forEach(r=>r.classList.remove('on'));
+  [0,1,2].forEach(j=>{const g=tankEls[j], tr=tripAt(run,j,t); let x=DEPOT.x+(j-1)*34, y=DEPOT.y-38, empty=false;
+    if(tr){const s=S[tr.i]; routes[tr.i].classList.add('on'); const tIn=tr.arr-0.5;
+      if(t<tIn){const f=(t-tr.dep)/(tIn-tr.dep); x=DEPOT.x+(s.x-DEPOT.x)*f; y=DEPOT.y+(s.y-DEPOT.y)*f;}
+      else if(t<tr.arr){x=s.x+(j-1)*10; y=s.y+siteEls[tr.i].r+24;}
+      else if(t<tr.back){const f=(t-tr.arr)/(tr.back-tr.arr); x=s.x+(DEPOT.x-s.x)*f; y=s.y+(DEPOT.y-s.y)*f; empty=true;}
+      else {empty=true;}
+      g.classList.toggle('manual',!!tr.manual);
+    } else g.classList.remove('manual');
+    g.classList.toggle('empty',empty); g.setAttribute('transform',`translate(${x.toFixed(1)} ${y.toFixed(1)})`);
+  });
+  renderQueue(run,sn,t); renderFleet(run,t); renderLog(run,t); renderKPIs(k); renderDetail(sn,t);
+  if(chart._X){const X=chart._X(k); $('cur').setAttribute('x1',X); $('cur').setAttribute('x2',X); $('curdot').setAttribute('cx',X); $('curdot').setAttribute('cy',chart._Y(sn.unmet));}
+}
+function renderQueue(run,sn,t){
+  const q=$('queue'); const r=rank(state.policy,S,sn).slice(0,5);
+  $('queueTitle').textContent= state.policy==='aquareach'?'Recommended next dispatches':'Dispatch queue';
+  $('queueSub').textContent= state.policy==='aquareach'?'Ranked by urgency + access needs':(state.policy==='fcfs'?'Order of requests':'Closest first');
+  if(!r.length){q.innerHTML=`<li class="empty">${state.policy==='aquareach'?'All communities have enough water on hand or on the way.':'No open requests. Communities request water once their tanks fall below half.'}</li>`;return;}
+  q.innerHTML=r.map((o,n)=>`<li class="q${n===0?' first':''}"><span class="rk">${n+1}</span><div style="min-width:0"><div class="nm">${S[o.i].id} · ${S[o.i].name}</div><div class="why">${o.why}</div></div><button class="ov" data-i="${o.i}" title="Send the next free tanker here">Send next</button></li>`).join('');
+}
+function renderFleet(run,t){
+  $('fleet').innerHTML=[0,1,2].map(j=>{const tr=tripAt(run,j,t); let txt='<b>Idle</b> at refill point', eta='', pr=0;
+    if(tr){const s=S[tr.i], tIn=tr.arr-0.5;
+      if(t<tIn){txt=`<b>To ${s.id}</b> · ${s.name}`; eta='ETA '+fmtClock(tIn).slice(3); pr=(t-tr.dep)/(tIn-tr.dep);}
+      else if(t<tr.arr){txt=`<b>Unloading</b> at ${s.id} · ${s.name}`; eta='10,000 L'; pr=1;}
+      else if(t<tr.back){txt=`<b>Returning</b> from ${s.id}`; eta='back '+fmtClock(tr.back).slice(3); pr=(t-tr.arr)/(tr.back-tr.arr);}
+      else {txt='<b>Refilling</b> at treatment plant'; eta='ready '+fmtClock(tr.free).slice(3); pr=(t-tr.back)/(tr.free-tr.back);}
+      if(tr.manual) txt+=' <span class="pill" style="background:var(--manual-soft);color:var(--manual)">Override</span>';
+    }
+    return `<div class="tk"><span class="id">T${j+1}</span><span class="st">${txt}</span><span class="eta">${eta}</span><span class="bar"><i style="width:${(pr*100).toFixed(0)}%"></i></span></div>`;}).join('');
+}
+function evText(e){const s=S[e.i];
+  if(e.type==='dispatch') return [e.manual?'var(--manual)':'var(--accent)',`<b>T${e.j+1} → ${s.id} ${s.name}</b><br>${e.manual?'Dispatcher override':e.why}`];
+  if(e.type==='deliver') return ['var(--ok)',`<b>${fmt(e.amt)} L delivered</b> to ${s.id} ${s.name}`];
+  if(e.type==='assist') return ['var(--manual)',`<b>Volunteers alerted</b> for door-to-door help at ${s.id} (${Math.round(s.vuln*100)}% of residents)`];
+  if(e.type==='dry') return ['var(--crit)',`<b>${s.id} ${s.name} is dry</b>`];
+  return ['var(--ok)',`<b>Supply restored</b> at ${s.id} ${s.name}`];}
+let lastLogKey='';
+function renderLog(run,t){
+  const ev=run.events.filter(e=>e.t<=t+1e-9); const key=state.policy+ev.length;
+  $('logCount').textContent=ev.length+' events'; if(key===lastLogKey) return; lastLogKey=key;
+  $('log').innerHTML=ev.slice(-30).reverse().map(e=>{const [c,tx]=evText(e);return `<li><span class="t">${fmtClock(e.t)}</span><span class="ic" style="background:${c}"></span><span class="tx">${tx}</span></li>`;}).join('')||'<li><span class="t">'+fmtClock(0)+'</span><span class="ic" style="background:var(--crit)"></span><span class="tx"><b>Trunk main burst.</b> Supply cut to 8 communities.</span></li>';
+}
+function renderKPIs(k){
+  const P=['fcfs','nearest','aquareach'], cur=state.policy, others=P.filter(p=>p!==cur);
+  const dryNow=p=>runs[p].snaps[k].R.filter(r=>r<=1e-6).length, longest=p=>Math.max(...runs[p].snaps[k].maxDry);
+  const tiles=[
+    ['Unmet essential water',fmt(runs[cur].snaps[k].unmet),'person-days',p=>fmt(runs[p].snaps[k].unmet),runs[cur].snaps[k].unmet>50],
+    ['Communities dry now',dryNow(cur),'of 8',p=>dryNow(p)+' of 8',dryNow(cur)>0],
+    ['Longest dry spell',longest(cur).toFixed(1),'h',p=>longest(p).toFixed(1)+' h',longest(cur)>1],
+    ['Tanker distance',fmt(runs[cur].snaps[k].km),'km',p=>fmt(runs[p].snaps[k].km)+' km',null]];
+  $('kpis').innerHTML=tiles.map(([l,v,u,f,bad])=>`<div class="card kpi ${bad===null?'':bad?'bad':'good'}"><div class="lbl">${l}</div><div class="v">${v}<small>${u}</small></div><div class="cmp">${others.map(p=>`<span>${NAMES[p]}<em>${f(p)}</em></span>`).join('')}</div></div>`).join('');
+}
+function renderDetail(sn,t){
+  const d=$('detail'); if(state.sel===null){d.hidden=true;return;} d.hidden=false;
+  const i=state.sel,s=S[i],st=statusOf(i,sn),h=sn.R[i]/s.demand,frac=sn.R[i]/s.cap;
+  d.innerHTML=`<div class="hd"><div><h3>${s.id} · ${s.name}</h3><div class="kind">${s.kind}</div></div><button class="x" aria-label="Close" data-close>×</button></div>
+  <div style="display:flex;gap:8px;align-items:center"><span class="pill ${st.c}">${st.t}</span>${sn.enroute[i]>0?'<span class="pill" style="background:var(--accent-soft);color:var(--accent)">Tanker en route</span>':''}${s.vuln>=0.2?'<span class="pill" style="background:var(--manual-soft);color:var(--manual)">Assistance flag</span>':''}</div>
+  <div><div class="tankbar"><i style="width:${(frac*100).toFixed(0)}%;background:${st.col}"></i></div></div>
+  <div class="grid2"><div><span>Water left</span><b>${fmt(sn.R[i])} L</b></div><div><span>Lasts</span><b>${st.c==='crit'?'—':(h*0.8).toFixed(1)+'–'+(h*1.2).toFixed(1)+' h'}</b></div>
+  <div><span>Residents</span><b>${fmt(s.pop)}</b></div><div><span>Need help carrying</span><b>${Math.round(s.vuln*100)}%</b></div>
+  <div><span>Distance</span><b>${s.dist.toFixed(1)} km · ${Math.round(s.travel*60)} min</b></div><div><span>Unmet so far</span><b>${fmt(sn.unmetSite[i])} p-days</b></div></div>
+  <button class="btn-ov" data-i="${i}">Send next free tanker here</button>`;
+}
+
+/* ---------- interactions ---------- */
+function setPolicy(p){state.policy=p;document.querySelectorAll('.strat button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.s===p));lastLogKey='';drawChart();render();}
+function select(i){state.sel=state.sel===i?null:i;render();}
+function override(i){
+  const t=state.k*DT; state.overrides[state.policy].push({t,i});
+  runs[state.policy]=simulate(state.policy,S,state.overrides[state.policy]); lastLogKey=''; drawChart(); render();
+  toast('manual','Dispatcher override',`Next free tanker goes to ${S[i].id} · ${S[i].name}. The plan is recalculated around it.`);
+}
+function toast(cls,title,txt){const t=document.createElement('div');t.className='toast '+cls;t.innerHTML=`<b>${title}</b>${txt}`;$('toasts').prepend(t);while($('toasts').children.length>2)$('toasts').lastChild.remove();setTimeout(()=>t.remove(),5000);}
+document.querySelectorAll('.strat button').forEach(b=>b.addEventListener('click',()=>{stopDemo();setPolicy(b.dataset.s);}));
+document.querySelectorAll('#speed button').forEach(b=>b.addEventListener('click',()=>{state.speed=+b.dataset.v;document.querySelectorAll('#speed button').forEach(x=>x.setAttribute('aria-pressed',x===b));}));
+$('scrub').addEventListener('input',e=>{stopDemo();state.k=+e.target.value;render();});
+$('playBtn').addEventListener('click',()=>{stopDemo();setPlaying(!state.playing);});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(b&&(b.classList.contains('ov')||b.classList.contains('btn-ov'))){override(+b.dataset.i);return;} if(e.target.closest('[data-close]')){state.sel=null;render();}});
+function setPlaying(on){state.playing=on;if(on&&state.k>=STEPS-1)state.k=0;$('playIc').innerHTML=on?'<path d="M6 4h4v16H6zM14 4h4v16h-4z" fill="currentColor"/>':'<path d="M7 4l13 8-13 8z" fill="currentColor"/>';$('playBtn').setAttribute('aria-label',on?'Pause':'Play');last=null;}
+let last=null, acc=0, seenEv=0;
+function loop(ts){
+  if(state.playing){ if(last!==null){acc+=(ts-last)/1000*state.speed/DT; const n=Math.floor(acc); if(n>0){acc-=n; const prevT=state.k*DT; state.k=Math.min(STEPS-1,state.k+n);
+        const nowT=state.k*DT; runs[state.policy].events.filter(e=>e.t>prevT&&e.t<=nowT).forEach(e=>{
+          if(e.type==='assist') toast('', 'Volunteers alerted',`Door-to-door help at ${S[e.i].id} · ${S[e.i].name}`);
+          if(e.type==='dry') toast('crit',`${S[e.i].id} is dry`,`${S[e.i].name} has run out of water.`);});
+        render(); if(state.k>=STEPS-1){setPlaying(false); if(state.demo) state.demo.onEnd&&state.demo.onEnd();}}}
+    last=ts; }
+  requestAnimationFrame(loop);
+}
+
+/* ---------- guided demo ---------- */
+const cap=$('caption');
+function say(kicker,text){cap.hidden=false;cap.innerHTML=(kicker?`<small>${kicker}</small>`:'')+text;}
+const wait=ms=>new Promise((res,rej)=>{const id=setTimeout(res,ms);state.demo&&(state.demo.timers.push(id));});
+function playTo(endK,speed){return new Promise(res=>{state.speed=speed;state.demo.onEnd=res;state.demo.stopAt=endK;setPlaying(true);});}
+function stopDemo(){if(!state.demo)return;state.demo.timers.forEach(clearTimeout);state.demo.cancel=true;state.demo=null;cap.hidden=true;setPlaying(false);$('demoBtn').classList.remove('on');$('demoBtn').querySelector('span').textContent='Guided demo';}
+setInterval(()=>{if(state.demo&&state.demo.stopAt!=null&&state.k>=state.demo.stopAt&&state.playing){setPlaying(false);const f=state.demo.onEnd;state.demo.stopAt=null;f&&f();}},30);
+async function runDemo(){
+  const d=state.demo={timers:[],cancel:false}; $('demoBtn').classList.add('on'); $('demoBtn').querySelector('span').textContent='Stop demo';
+  const ok=()=>!d.cancel; const R=p=>runs[p];
+  state.sel=null; setPolicy('fcfs'); state.k=0; render();
+  say('06:00 · Incident WS-0417','A trunk main bursts. 8 communities and 30,100 people lose supply. Only 3 tankers are available.'); await wait(4500); if(!ok())return;
+  say('Rule 1 · First come, first served','Tankers go out in the order complaints arrive.'); await wait(2500); if(!ok())return;
+  await playTo(STEPS-1,6); if(!ok())return;
+  const fd=R('fcfs').snaps.at(-1).maxDry.filter(x=>x>0).length;
+  say('Result',`${fd} communities run dry. ${fmt(R('fcfs').unmet)} person-days of essential water never arrive.`); await wait(4000); if(!ok())return;
+  setPolicy('nearest'); state.k=0; render();
+  say('Rule 2 · Nearest first','Tankers serve the closest request. Far-away communities keep getting skipped.'); await wait(2800); if(!ok())return;
+  await playTo(STEPS-1,6); if(!ok())return;
+  const nr=R('nearest'); state.sel=nr.maxDrySite; render();
+  say('Result',`${S[nr.maxDrySite].name} goes ${nr.maxDry.toFixed(1)} hours without water.`); await wait(4200); if(!ok())return;
+  state.sel=null; setPolicy('aquareach'); state.k=0; render();
+  say('AquaReach','Send water to whoever will run out first, weighted for residents who need help.'); await wait(3500); if(!ok())return;
+  await playTo(Math.round(9/DT),3); if(!ok())return;
+  $('queueCard').classList.remove('flash'); void $('queueCard').offsetWidth; $('queueCard').classList.add('flash');
+  say('Explainable','Every recommendation says why: hours left, who needs help, travel time. The dispatcher approves or overrides.'); await wait(5000); if(!ok())return;
+  const as=S.findIndex(s=>s.vuln>=0.4); state.sel=as; render();
+  say('The last 50 metres','Where residents cannot carry water upstairs, volunteers are alerted for door-to-door help.'); await wait(4500); if(!ok())return;
+  state.sel=null; say('AquaReach','Running the rest of the 48 hours…'); await playTo(STEPS-1,6); if(!ok())return;
+  say('Same tankers. Same water. First come · Nearest → AquaReach',`Unmet water: ${fmt(R('fcfs').unmet)} · ${fmt(R('nearest').unmet)} → <span style="color:#7cc4ff">${fmt(R('aquareach').unmet)} person-days</span><br>Longest dry spell: ${R('fcfs').maxDry.toFixed(1)} · ${R('nearest').maxDry.toFixed(1)} h → <span style="color:#7cc4ff">${R('aquareach').maxDry.toFixed(1)} h</span>`); await wait(7000); if(!ok())return;
+  stopDemo();
+}
+$('demoBtn').addEventListener('click',()=>{if(state.demo){stopDemo();}else runDemo();});
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return; if(e.key===' '&&!e.target.closest('button,.site')){e.preventDefault();stopDemo();setPlaying(!state.playing);} if(e.key==='Escape'){stopDemo();state.sel=null;render();}});
+
+drawChart(); render(); requestAnimationFrame(loop);
+})();
+</script>
+
+</body></html>
