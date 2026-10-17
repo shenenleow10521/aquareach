@@ -213,30 +213,73 @@ a{color:inherit}
   .fd{margin-top:6px;max-width:none}
 }
 
-/* 04 prototype demo */
-.demo{display:grid;grid-template-columns:minmax(0,2.25fr) minmax(0,1fr);gap:clamp(28px,4vw,60px);align-items:center;margin-top:clamp(36px,5vw,60px)}
-.stage{perspective:1400px;min-width:0}
-.device{position:relative;padding:clamp(6px,.8vw,10px);border-radius:18px;background:linear-gradient(180deg,#1b4068,var(--navy));box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 44px 80px -34px rgba(11,37,64,.6),0 16px 36px -22px rgba(11,37,64,.4);transform-origin:50% 100%}
-.scr{position:relative;display:block;border-radius:12px;overflow:hidden;background:var(--white)}
-.scr img{width:100%;height:auto}
-.hl{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.hl g{opacity:0;transition:opacity .5s}
-.hl g.on{opacity:1}
-.hl .dim{fill:rgba(6,26,47,.42)}
-.hl .ring{fill:none;stroke:var(--sky);stroke-width:3;vector-effect:non-scaling-stroke}
-.watch-t{font-family:var(--disp);font-weight:800;font-size:clamp(1.7rem,2.7vw,2.35rem);color:var(--blue)}
-.watch ol{list-style:none;padding:0;margin:clamp(18px,3vw,36px) 0 0;display:grid;gap:clamp(6px,1.2vw,14px)}
-.watch button{position:relative;display:flex;gap:14px;align-items:baseline;width:100%;margin:0;padding:12px 14px;border:0;border-radius:12px;background:transparent;font:inherit;font-size:clamp(1.08rem,1.65vw,1.5rem);line-height:1.25;color:var(--ink);text-align:left;cursor:pointer;transition:background-color .3s,box-shadow .3s}
-.watch button:hover{background:rgba(255,255,255,.7)}
-.watch button[aria-pressed="true"]{font-weight:700;background:var(--white);box-shadow:0 0 0 1px var(--rule),0 12px 26px -16px rgba(11,37,64,.4)}
-.watch button .k{font-variant-numeric:tabular-nums}
-.watch button::after{content:"";position:absolute;left:14px;right:14px;bottom:6px;height:2px;border-radius:2px;background:var(--sky);transform:scaleX(0);transform-origin:left}
-.watch.auto button[aria-pressed="true"]::after{animation:tick 3.2s linear forwards}
+/* 04 prototype demo: the live console in a window frame */
+.chap.dark{background:radial-gradient(80% 60% at 72% 34%,#0F3358 0%,#061A2F 56%,#030F1D 100%);color:var(--white);padding-block:clamp(110px,12vw,170px)}
+.chap.dark,.chap.dark+.chap{border-top:0}
+.chap.dark::before{background-image:linear-gradient(rgba(107,184,242,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(107,184,242,.06) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(ellipse 80% 60% at 60% 40%,#000 20%,transparent 80%);mask-image:radial-gradient(ellipse 80% 60% at 60% 40%,#000 20%,transparent 80%)}
+.chap.dark h2{color:var(--white)}
+.chap.dark .cn,.chap.dark .ck{color:var(--sky)}
+.chap.dark .ghost{-webkit-text-stroke-color:rgba(107,184,242,.14)}
+.watch{margin-top:clamp(26px,3.6vw,44px)}
+.watch-t{font-family:var(--disp);font-weight:800;font-size:clamp(1.35rem,2.1vw,1.8rem);color:var(--sky)}
+.watch ol{list-style:none;padding:0;margin:16px 0 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,1.2vw,14px)}
+.watch button{position:relative;overflow:hidden;display:flex;align-items:center;gap:12px;width:100%;height:100%;margin:0;padding:14px 16px 16px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.04);font:inherit;font-size:clamp(1rem,1.3vw,1.16rem);line-height:1.25;color:rgba(230,240,248,.82);text-align:left;cursor:pointer;transition:background-color .3s,border-color .3s,color .3s,box-shadow .3s,transform .3s}
+.watch button:hover{background:rgba(255,255,255,.08);transform:translateY(-2px)}
+.watch button[aria-pressed="true"]{color:var(--white);font-weight:700;background:rgba(107,184,242,.14);border-color:rgba(107,184,242,.6);box-shadow:0 0 0 1px rgba(107,184,242,.2),0 18px 40px -20px rgba(8,102,196,.8)}
+.k{position:relative;flex:none;width:30px;height:34px;display:grid;place-items:center;font-weight:800;font-size:.95rem;font-variant-numeric:tabular-nums}
+.k .hk{position:absolute;inset:0;width:100%;height:100%;fill:rgba(255,255,255,.06);stroke:rgba(107,184,242,.5);stroke-width:1.4}
+.k span{position:relative}
+.watch button[aria-pressed="true"] .hk{fill:var(--sky);stroke:var(--sky)}
+.watch button[aria-pressed="true"] .k span{color:var(--abyss)}
+.watch .pbar{position:absolute;left:0;bottom:0;height:3px;width:100%;background:linear-gradient(90deg,var(--blue),var(--sky));transform:scaleX(0);transform-origin:left}
+.watch.auto button[aria-pressed="true"] .pbar{animation:tick var(--dur,6.5s) linear forwards}
 @keyframes tick{to{transform:scaleX(1)}}
-@media (max-width:900px){
-  .demo{grid-template-columns:minmax(0,1fr)}
-  .watch ol{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .watch button{font-size:1rem;padding:10px 12px;gap:10px}
+.stage{position:relative;margin-top:clamp(28px,4vw,52px)}
+.stage::before{content:"";position:absolute;left:8%;right:8%;top:12%;bottom:-6%;border-radius:50%;background:radial-gradient(closest-side,rgba(8,102,196,.55),transparent);filter:blur(40px);pointer-events:none}
+.frame{position:relative;border-radius:18px;background:linear-gradient(180deg,#0F2E50,#0A2440);box-shadow:0 70px 120px -50px rgba(0,0,0,.85),0 0 0 1px rgba(107,184,242,.18);transform-origin:50% 0}
+.frame::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a),transparent 0deg,transparent 250deg,var(--sky) 315deg,#fff 335deg,transparent 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 7s linear infinite;pointer-events:none;z-index:3}
+.chrome{display:flex;align-items:center;gap:12px;height:48px;padding:0 12px 0 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+.dots{display:flex;gap:7px;flex:none}
+.dots i{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.16)}
+.dots i:first-child{background:#E5503F}.dots i:nth-child(2){background:#E9A93A}.dots i:nth-child(3){background:#3FB66B}
+.url{flex:1;min-width:0;max-width:420px;margin-inline:auto;display:flex;align-items:center;justify-content:center;gap:8px;height:30px;padding:0 14px;border-radius:9px;background:rgba(2,11,22,.55);border:1px solid rgba(255,255,255,.07);font-size:13px;color:rgba(212,235,252,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.url svg{flex:none;width:13px;height:13px;fill:none;stroke:var(--sky);stroke-width:1.5}
+.chrome .live{flex:none}
+.cbtn{flex:none;display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 12px;border-radius:9px;border:0;background:var(--sky);color:var(--abyss);font:inherit;font-size:13px;font-weight:700;text-decoration:none;cursor:pointer;transition:background-color .2s,transform .2s}
+.cbtn:hover{background:var(--foam);transform:translateY(-1px)}
+.cbtn svg{width:13px;height:13px;fill:currentColor;stroke:none}
+.cbtn.ghostb{background:rgba(255,255,255,.08);color:var(--white);border:1px solid rgba(255,255,255,.12)}
+.cbtn.ghostb:hover{background:rgba(255,255,255,.16)}
+.cbtn.ghostb svg{fill:none;stroke:currentColor;stroke-width:1.6}
+.view{position:relative;overflow:hidden;border-radius:0 0 17px 17px;background:#E9EEF1}
+.view .ph{width:100%;height:auto}
+.view iframe{position:absolute;left:0;top:0;border:0;display:block;transform-origin:0 0;opacity:0;transition:opacity .6s;background:#E9EEF1}
+.view.vlive iframe{opacity:1}
+.view.vlive .ph{visibility:hidden}
+.hlv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:visible}
+.hlv .dim{fill:rgba(2,11,22,.46);fill-rule:evenodd;transition:opacity .4s}
+.hlv rect{fill:none;stroke:var(--sky);stroke-width:2.5;filter:drop-shadow(0 0 10px rgba(107,184,242,.85))}
+.tag{position:absolute;z-index:2;left:0;top:0;display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:999px;background:var(--sky);color:var(--abyss);font-weight:700;font-size:13px;white-space:nowrap;pointer-events:none;box-shadow:0 10px 24px -8px rgba(2,11,22,.6);opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s}
+.tag.on{opacity:1;transform:none}
+.tag b{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--abyss);color:var(--sky);font-size:12px}
+.loading{position:absolute;z-index:2;right:14px;bottom:14px;display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:rgba(6,26,47,.85);color:var(--foam);font-size:12.5px;font-weight:600}
+.loading i{width:12px;height:12px;border-radius:50%;border:2px solid rgba(107,184,242,.35);border-top-color:var(--sky);animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.view.vlive .loading,.view.nolive .loading{display:none}
+.hint{margin-top:16px;text-align:center;font-size:.95rem;color:rgba(212,235,252,.66)}
+.hint b{color:var(--white)}
+@media (max-width:900px){.watch ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  .chrome{gap:8px;padding:0 8px 0 12px;height:44px}
+  .url{display:none}
+  .chrome .live{margin-left:auto}
+  .cbtn span{display:none}
+  .cbtn.ghostb{padding:0 9px}
+  .view{height:min(74svh,660px)}
+  .view .ph{height:100%;object-fit:cover;object-position:0 0}
+  .view iframe{width:100%;height:100%}
+  .watch button{padding:12px;gap:10px;font-size:.98rem}
+  .stage::before{display:none}
 }
 
 /* 05 how a community reaches the top of the queue */
@@ -468,6 +511,28 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
 .mtrack span:nth-of-type(2n+1){color:var(--sky);-webkit-text-stroke:0;text-shadow:0 0 34px rgba(107,184,242,.35)}
 .mtrack i{flex:none;width:clamp(18px,2.4vw,34px);aspect-ratio:1 / 1.1547;clip-path:var(--hexp);background:linear-gradient(180deg,var(--foam),var(--blue))}
 
+/* factor mini visuals */
+.fv{display:block;width:150px;height:44px;margin-bottom:14px;overflow:visible}
+.fv .sg{fill:var(--blue);animation:seg 4.2s steps(1) infinite}
+@keyframes seg{0%,8%{fill:var(--blue)}60%,92%{fill:var(--rule)}100%{fill:var(--blue)}}
+.fv .fl{stroke:var(--rule);stroke-width:2;stroke-dasharray:4 4;fill:none}
+.fv .fdep{fill:var(--mist);stroke:var(--ember);stroke-width:1.6}
+.fv .fsite{fill:none;stroke:var(--ember);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:fsite 3.4s ease-in-out infinite}
+@keyframes fsite{80%{transform:scale(1)}90%{transform:scale(1.5)}100%{transform:scale(1)}}
+.fv .ftk{fill:var(--ember);animation:ftk 3.4s cubic-bezier(.5,0,.3,1) infinite}
+@keyframes ftk{0%,8%{transform:translateX(0)}80%,100%{transform:translateX(104px)}}
+.fv .pp{fill:var(--rule)}
+.fv .pp.on{fill:var(--blue);animation:pp 2.4s ease-in-out infinite}
+@keyframes pp{50%{fill:var(--sky)}}
+
+/* roadmap track */
+.road ol{position:relative;padding-left:52px}
+.road ol::before{content:"";position:absolute;left:15px;top:8px;bottom:8px;width:2px;background:var(--rule);border-radius:2px}
+.road ol::after{content:"";position:absolute;left:15px;top:8px;width:2px;height:calc((100% - 16px) * var(--p,1));background:linear-gradient(180deg,var(--blue),var(--sky));border-radius:2px;box-shadow:0 0 12px rgba(107,184,242,.6)}
+.road li{position:relative;display:block;padding-block:2px}
+.road li::before{content:counter(r) ".";position:absolute;left:-52px;top:50%;width:32px;height:36px;margin-top:-18px;display:grid;place-items:center;clip-path:var(--hexp);background:var(--rule);color:var(--slate);font-family:var(--disp);font-weight:800;font-size:.95rem;transition:background-color .4s,color .4s}
+.road li.on::before,html:not(.motion) .road li::before{background:var(--blue);color:var(--white)}
+
 /* ---------- thank you ---------- */
 .thanks{position:relative;overflow:hidden;color:var(--white);background:radial-gradient(90% 70% at 55% 100%,#0D3157 0%,#061A2F 55%,#020B16 100%);height:min(100svh,940px);min-height:660px}
 .veil2{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(2,11,22,.78) 0%,rgba(2,11,22,.38) 34%,rgba(2,11,22,0) 60%)}
@@ -675,42 +740,43 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
 </section>
 
 <!-- Slide 5 -->
-<section class="chap" id="demo">
+<section class="chap dark" id="demo">
+  <div class="edge edge-t" aria-hidden="true"><svg viewBox="0 0 1440 60" preserveAspectRatio="none"></svg><svg viewBox="0 0 1440 60" preserveAspectRatio="none"></svg></div>
+  <div class="edge edge-b" aria-hidden="true"><svg viewBox="0 0 1440 60" preserveAspectRatio="none"></svg><svg viewBox="0 0 1440 60" preserveAspectRatio="none"></svg></div>
   <span class="ghost" aria-hidden="true">04</span>
   <div class="wrap cg">
     <div class="rail"><span class="cn">04</span><span class="ck">Pitch</span></div>
     <div class="cb">
       <h2>Prototype demo</h2>
-      <div class="demo">
-        <div class="stage">
-          <div class="device" id="device">
-            <a class="scr" href="prototype/aquareach-dispatch-console.html" target="_blank" rel="noopener" aria-label="Open the AquaReach prototype in a new tab">
-              <img src="assets/web/console-screen.jpg" width="1440" height="900" loading="lazy" alt="AquaReach dispatch console prototype with the service-area map, ranked dispatch queue, fleet, event log and strategy comparison">
-              <svg class="hl" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
-                <defs>
-                  <mask id="mk0"><rect width="1440" height="900" fill="#fff"/><rect x="14" y="150" width="862" height="605" rx="14" fill="#000"/></mask>
-                  <mask id="mk1"><rect width="1440" height="900" fill="#fff"/><rect x="889" y="150" width="537" height="272" rx="14" fill="#000"/></mask>
-                  <mask id="mk2"><rect width="1440" height="900" fill="#fff"/><rect x="24" y="86" width="374" height="46" rx="10" fill="#000"/><rect x="14" y="790" width="862" height="112" rx="12" fill="#000"/><rect x="889" y="790" width="537" height="112" rx="12" fill="#000"/></mask>
-                  <mask id="mk3"><rect width="1440" height="900" fill="#fff"/><rect x="1334" y="194" width="86" height="218" rx="10" fill="#000"/><rect x="34" y="696" width="282" height="44" rx="10" fill="#000"/></mask>
-                </defs>
-                <g><rect class="dim" width="1440" height="900" mask="url(#mk0)"/><rect class="ring" x="14" y="150" width="862" height="605" rx="14"/></g>
-                <g><rect class="dim" width="1440" height="900" mask="url(#mk1)"/><rect class="ring" x="889" y="150" width="537" height="272" rx="14"/></g>
-                <g><rect class="dim" width="1440" height="900" mask="url(#mk2)"/><rect class="ring" x="24" y="86" width="374" height="46" rx="10"/><rect class="ring" x="14" y="790" width="862" height="112" rx="12"/><rect class="ring" x="889" y="790" width="537" height="112" rx="12"/></g>
-                <g><rect class="dim" width="1440" height="900" mask="url(#mk3)"/><rect class="ring" x="1334" y="194" width="86" height="218" rx="10"/><rect class="ring" x="34" y="696" width="282" height="44" rx="10"/></g>
-              </svg>
-            </a>
-          </div>
+      <div class="watch" id="watch">
+        <p class="watch-t">Watch for</p>
+        <ol>
+          <li><button type="button" id="w0" aria-pressed="true"><span class="k"><svg class="hk" viewBox="0 0 26 30" aria-hidden="true"><path d="M13 1l11.5 6.6v14.8L13 29 1.5 22.4V7.6z"/></svg><span>1</span></span><span class="wl">Hours left on the map</span><i class="pbar" aria-hidden="true"></i></button></li>
+          <li><button type="button" id="w1" aria-pressed="false"><span class="k"><svg class="hk" viewBox="0 0 26 30" aria-hidden="true"><path d="M13 1l11.5 6.6v14.8L13 29 1.5 22.4V7.6z"/></svg><span>2</span></span><span class="wl">Reason for the queue</span><i class="pbar" aria-hidden="true"></i></button></li>
+          <li><button type="button" id="w2" aria-pressed="false"><span class="k"><svg class="hk" viewBox="0 0 26 30" aria-hidden="true"><path d="M13 1l11.5 6.6v14.8L13 29 1.5 22.4V7.6z"/></svg><span>3</span></span><span class="wl">Strategy comparison</span><i class="pbar" aria-hidden="true"></i></button></li>
+          <li><button type="button" id="w3" aria-pressed="false"><span class="k"><svg class="hk" viewBox="0 0 26 30" aria-hidden="true"><path d="M13 1l11.5 6.6v14.8L13 29 1.5 22.4V7.6z"/></svg><span>4</span></span><span class="wl">Dispatcher override</span><i class="pbar" aria-hidden="true"></i></button></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="stage" id="stage">
+      <div class="frame" id="frame">
+        <div class="chrome">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="url"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5.2a3.5 3.5 0 0 1 7 0V7M3.5 7h9v6.5h-9z"/></svg>AquaReach · Dispatch console</span>
+          <span class="live" id="stLive"><i></i>Live</span>
+          <button type="button" class="cbtn" id="gdemo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5l8 4.5-8 4.5z"/></svg>Guided demo</button>
+          <a class="cbtn ghostb" href="prototype/aquareach-dispatch-console.html" target="_blank" rel="noopener" aria-label="Open the dispatch console full screen in a new tab"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9.5 2.5h4v4M13.5 2.5 8 8M6.5 3.5h-3v9h9v-3"/></svg><span>Full screen</span></a>
         </div>
-        <div class="watch" id="watch">
-          <p class="watch-t">Watch for</p>
-          <ol>
-            <li><button type="button" id="w0" aria-pressed="true"><span class="k">1</span><span>Hours left on the map</span></button></li>
-            <li><button type="button" id="w1" aria-pressed="false"><span class="k">2</span><span>Reason for the queue</span></button></li>
-            <li><button type="button" id="w2" aria-pressed="false"><span class="k">3</span><span>Strategy comparison</span></button></li>
-            <li><button type="button" id="w3" aria-pressed="false"><span class="k">4</span><span>Dispatcher override</span></button></li>
-          </ol>
+        <div class="view" id="view">
+          <img class="ph" src="assets/web/console-screen.jpg" width="1440" height="900" loading="lazy" alt="AquaReach dispatch console prototype with the service-area map, ranked dispatch queue, fleet, event log and strategy comparison">
+          <svg class="hlv" id="hlv" aria-hidden="true"><path class="dim" id="hlDim"/><g id="hlRings"></g></svg>
+          <span class="tag" id="hlTag" aria-hidden="true"></span>
+          <span class="loading" id="vLoad" aria-hidden="true"><i></i>Starting the console</span>
         </div>
       </div>
+      <p class="hint" id="stHint" aria-hidden="true">Interactive: switch strategy, scrub the timeline, click a community or press <b>Send next</b>.</p>
     </div>
   </div>
 </section>
@@ -724,9 +790,9 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
       <h2>How a community reaches the top of the queue</h2>
       <p class="lead2">The recommendation compares remaining water with delivery time, then shows the dispatcher why.</p>
       <div class="factors">
-        <div class="factor"><h3>Hours of water left</h3><p>Tank level, population and 15 L/person/day</p></div>
-        <div class="factor e"><h3>Time until delivery</h3><p>Travel, unloading and tanker availability</p></div>
-        <div class="factor"><h3>Access needs</h3><p>Share of residents who need help carrying water</p></div>
+        <div class="factor"><svg class="fv" viewBox="0 0 150 44" aria-hidden="true"><rect class="sg" x="4" y="14" width="9" height="18" rx="2" style="animation-delay:3.52s"/><rect class="sg" x="16" y="14" width="9" height="18" rx="2" style="animation-delay:3.20s"/><rect class="sg" x="28" y="14" width="9" height="18" rx="2" style="animation-delay:2.88s"/><rect class="sg" x="40" y="14" width="9" height="18" rx="2" style="animation-delay:2.56s"/><rect class="sg" x="52" y="14" width="9" height="18" rx="2" style="animation-delay:2.24s"/><rect class="sg" x="64" y="14" width="9" height="18" rx="2" style="animation-delay:1.92s"/><rect class="sg" x="76" y="14" width="9" height="18" rx="2" style="animation-delay:1.60s"/><rect class="sg" x="88" y="14" width="9" height="18" rx="2" style="animation-delay:1.28s"/><rect class="sg" x="100" y="14" width="9" height="18" rx="2" style="animation-delay:0.96s"/><rect class="sg" x="112" y="14" width="9" height="18" rx="2" style="animation-delay:0.64s"/><rect class="sg" x="124" y="14" width="9" height="18" rx="2" style="animation-delay:0.32s"/><rect class="sg" x="136" y="14" width="9" height="18" rx="2" style="animation-delay:0.00s"/></svg><h3>Hours of water left</h3><p>Tank level, population and 15 L/person/day</p></div>
+        <div class="factor e"><svg class="fv" viewBox="0 0 150 44" aria-hidden="true"><path class="fl" d="M18 30H134"/><path class="fdep" d="M12 23l7 4v8l-7 4-7-4v-8z"/><circle class="fsite" cx="138" cy="30" r="6"/><g class="ftk"><rect x="10" y="17" width="16" height="9" rx="2"/><rect x="26" y="20" width="6" height="6" rx="1.5"/></g></svg><h3>Time until delivery</h3><p>Travel, unloading and tanker availability</p></div>
+        <div class="factor"><svg class="fv" viewBox="0 0 150 44" aria-hidden="true"><g class="pp" style="animation-delay:0.00s"><circle cx="8" cy="15" r="4"/><path d="M2 34v-5a6 6 0 0 1 12 0v5z"/></g><g class="pp" style="animation-delay:0.12s"><circle cx="22" cy="15" r="4"/><path d="M16 34v-5a6 6 0 0 1 12 0v5z"/></g><g class="pp on" style="animation-delay:0.24s"><circle cx="36" cy="15" r="4"/><path d="M30 34v-5a6 6 0 0 1 12 0v5z"/></g><g class="pp" style="animation-delay:0.36s"><circle cx="50" cy="15" r="4"/><path d="M44 34v-5a6 6 0 0 1 12 0v5z"/></g><g class="pp" style="animation-delay:0.48s"><circle cx="64" cy="15" r="4"/><path d="M58 34v-5a6 6 0 0 1 12 0v5z"/></g><g class="pp on" style="animation-delay:0.60s"><circle cx="78" cy="15" r="4"/><path d="M72 34v-5a6 6 0 0 1 12 0v5z"/></g><g class="pp" style="animation-delay:0.72s"><circle cx="92" cy="15" r="4"/><path d="M86 34v-5a6 6 0 0 1 12 0v5z"/></g><g class="pp" style="animation-delay:0.84s"><circle cx="106" cy="15" r="4"/><path d="M100 34v-5a6 6 0 0 1 12 0v5z"/></g><g class="pp on" style="animation-delay:0.96s"><circle cx="120" cy="15" r="4"/><path d="M114 34v-5a6 6 0 0 1 12 0v5z"/></g><g class="pp" style="animation-delay:1.08s"><circle cx="134" cy="15" r="4"/><path d="M128 34v-5a6 6 0 0 1 12 0v5z"/></g></svg><h3>Access needs</h3><p>Share of residents who need help carrying water</p></div>
       </div>
       <div class="bracket" aria-hidden="true"><span class="v"></span><span class="v"></span><span class="v"></span><span class="h"></span><span class="stem"></span></div>
       <div class="result">
@@ -817,7 +883,7 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
         <div class="vdiv" aria-hidden="true"></div>
         <div class="road">
           <h3>Future roadmap</h3>
-          <ol>
+          <ol id="roadList">
             <li>Stress-test more scenarios</li>
             <li>Use complex routes and site data</li>
             <li>Gather dispatcher feedback</li>
@@ -1296,22 +1362,160 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
     });
   }
 
-  /* ---------- prototype "watch for" ---------- */
-  const watch = $('#watch'), wbtn = $$('#watch button'), groups = $$('.hl g');
-  let wi = 0, hold = 0, timer = 0;
-  function setW(i) {
-    wi = i;
-    wbtn.forEach((b, k) => b.setAttribute('aria-pressed', String(k === i)));
-    groups.forEach((g, k) => g.classList.toggle('on', k === i));
-    watch.classList.toggle('auto', !RM && Date.now() >= hold && !!timer);
-  }
-  wbtn.forEach((b, k) => b.addEventListener('click', () => { hold = Date.now() + 9000; setW(k); }));
-  new IntersectionObserver(([e]) => {
-    clearInterval(timer); timer = 0;
-    if (e.isIntersecting && !RM) timer = setInterval(() => { if (Date.now() >= hold) setW((wi + 1) % wbtn.length); }, 3200);
-    setW(wi);
-  }, { threshold: 0.35 }).observe($('.demo'));
-  setW(0);
+  /* ---------- prototype demo: the real console, driven by "Watch for" ---------- */
+  (() => {
+    const view = $('#view'), watch = $('#watch'), wbtn = $$('#watch button'), ring = $('#hlRings'), dim = $('#hlDim'), tag = $('#hlTag'), hlv = $('#hlv');
+    const SRC = $('.chrome a.cbtn').getAttribute('href'), DW = 1440, LABELS = wbtn.map(b => $('.wl', b).textContent);
+    let ifr = null, doc = null, win = null, ready = false, mob = false, sc = 1, cur = 0, hold = 0, timer = 0, inView = false, dirty = false, srcText = null, steps = [], targets = [];
+    let shown = [], anim = 0;
+    const q = sel => doc && doc.querySelector(sel);
+    const later = (fn, ms) => steps.push(setTimeout(fn, ms));
+    const clearSteps = () => { steps.forEach(clearTimeout); steps = []; };
+
+    function layout() {
+      if (!ready) return;
+      mob = view.clientWidth < 760;
+      if (!mob) {
+        ifr.setAttribute('scrolling', 'no');
+        doc.documentElement.style.overflow = 'hidden';
+        ifr.style.width = DW + 'px';
+        const H = Math.max(doc.documentElement.scrollHeight, doc.body.scrollHeight);
+        sc = view.clientWidth / DW;
+        ifr.style.height = H + 'px'; ifr.style.transform = `scale(${sc})`;
+        view.style.height = (H * sc).toFixed(1) + 'px';
+      } else {
+        ifr.removeAttribute('scrolling'); doc.documentElement.style.overflow = '';
+        ifr.style.width = ''; ifr.style.height = ''; ifr.style.transform = 'none'; view.style.height = ''; sc = 1;
+      }
+      drawRings(true);
+    }
+    function rectsOf(list) {
+      return list.map(el => el && el.getBoundingClientRect()).filter(r => r && r.width).map(r => [r.left * sc - 6, r.top * sc - 6, r.width * sc + 12, r.height * sc + 12]);
+    }
+    function paint(rs) {
+      const W = view.clientWidth, H = view.clientHeight;
+      hlv.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      const rr = (x, y, w, h, r = 12) => `M${x + r} ${y}H${x + w - r}Q${x + w} ${y} ${x + w} ${y + r}V${y + h - r}Q${x + w} ${y + h} ${x + w - r} ${y + h}H${x + r}Q${x} ${y + h} ${x} ${y + h - r}V${y + r}Q${x} ${y} ${x + r} ${y}Z`;
+      dim.setAttribute('d', rs.length ? `M0 0H${W}V${H}H0Z ` + rs.map(r => rr(...r)).join(' ') : '');
+      ring.innerHTML = rs.map(([x, y, w, h]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12"/>`).join('');
+      if (rs.length) {
+        const [x, y] = rs[0];
+        tag.style.left = Math.max(8, Math.min(W - tag.offsetWidth - 8, x + 16)) + 'px'; tag.style.top = Math.max(8, y - 15) + 'px';
+      }
+    }
+    function drawRings(jump) {
+      if (!ready) return;
+      const next = rectsOf(targets);
+      cancelAnimationFrame(anim);
+      if (jump || RM || !shown.length || shown.length !== next.length) { shown = next; paint(shown); return; }
+      const from = shown.map(r => r.slice()), t0 = performance.now();
+      const stepA = now => {
+        const k = Math.min(1, (now - t0) / 520), e = 1 - Math.pow(1 - k, 3);
+        shown = next.map((r, i) => r.map((v, j) => from[i][j] + (v - from[i][j]) * e)); paint(shown);
+        if (k < 1) anim = requestAnimationFrame(stepA);
+      };
+      anim = requestAnimationFrame(stepA);
+    }
+    function focusOn(list, label, n) {
+      targets = list;
+      tag.innerHTML = `<b>${n}</b>${label}`; tag.classList.toggle('on', !!list.length);
+      if (mob && list[0]) {
+        const r = list[0].getBoundingClientRect();
+        win.scrollTo({ top: Math.max(0, r.top + win.scrollY - 54), behavior: RM ? 'auto' : 'smooth' });
+      }
+      requestAnimationFrame(() => drawRings(false));
+    }
+
+    /* console controls, through its own buttons */
+    const reset = () => {
+      clearSteps();
+      doc.dispatchEvent(new win.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      const pb = q('#playBtn'); if (pb && pb.getAttribute('aria-label') === 'Pause') pb.click();
+    };
+    const strat = id => { const b = q(`.strat button[data-s="${id}"]`); if (b) b.click(); };
+    const scrub = k => { const r = q('#scrub'); if (!r) return; r.value = k; r.dispatchEvent(new win.Event('input', { bubbles: true })); };
+    const site = i => { const g = doc.querySelectorAll('.site')[i]; if (g) g.dispatchEvent(new win.MouseEvent('click', { bubbles: true })); };
+    const ACTIONS = [
+      () => { strat('aquareach'); scrub(60); site(2); return [q('.mapcard')]; },
+      () => { strat('aquareach'); scrub(60); const c = q('#queueCard'); c.classList.remove('flash'); void c.offsetWidth; c.classList.add('flash'); return [c]; },
+      () => {
+        strat('fcfs'); scrub(479);
+        later(() => strat('nearest'), 1500); later(() => strat('aquareach'), 3000);
+        return [q('.seg.strat'), q('#kpis'), q('.chartcard')];
+      },
+      () => {
+        strat('aquareach'); scrub(30);
+        later(() => { const b = q('.queue .ov'); if (b) { b.click(); dirty = true; later(() => drawRings(false), 60); } }, 900);
+        return [q('#queueCard'), q('#fleet') && q('#fleet').closest('.card')];
+      }
+    ];
+    async function act(i) {
+      cur = i;
+      wbtn.forEach((b, k) => b.setAttribute('aria-pressed', String(k === i)));
+      watch.classList.toggle('auto', !!timer && Date.now() >= hold && !RM);
+      watch.style.setProperty('--dur', '6.5s');
+      if (!ready) return;
+      if (dirty) await reboot();
+      reset();
+      focusOn(ACTIONS[i]().filter(Boolean), LABELS[i], i + 1);
+    }
+    wbtn.forEach((b, k) => b.addEventListener('click', () => { hold = Date.now() + 16000; watch.classList.remove('auto'); act(k); }));
+
+    function startAuto() {
+      clearInterval(timer); timer = 0;
+      if (RM || !ready || !inView) return;
+      timer = setInterval(() => { if (Date.now() >= hold) act((cur + 1) % ACTIONS.length); }, 6500);
+      watch.classList.toggle('auto', Date.now() >= hold);
+    }
+    $('#gdemo').addEventListener('click', async () => {
+      if (!ready) return;
+      hold = Date.now() + 75000; watch.classList.remove('auto');
+      if (dirty) await reboot();
+      reset(); targets = []; tag.classList.remove('on'); drawRings(true);
+      if (mob) win.scrollTo({ top: 0 });
+      const d = q('#demoBtn'); if (d) d.click();
+    });
+
+    function wire() {
+      doc = ifr.contentDocument; win = ifr.contentWindow;
+      if (!doc || !doc.querySelector('#map')) { ifr.remove(); view.classList.add('nolive'); return; }
+      ready = true; view.classList.add('vlive');
+      ['pointerdown', 'wheel', 'touchstart'].forEach(ev => doc.addEventListener(ev, e => { if (e.isTrusted) { hold = Date.now() + 20000; watch.classList.remove('auto'); } }, { passive: true }));
+      win.addEventListener('scroll', () => drawRings(true), { passive: true });
+      win.addEventListener('resize', () => drawRings(true));
+      layout();
+      if (doc.fonts) doc.fonts.ready.then(layout);
+      setTimeout(layout, 600);
+      act(cur); startAuto();
+    }
+    function mount() {
+      ifr = document.createElement('iframe');
+      ifr.title = 'AquaReach dispatch console prototype';
+      ifr.setAttribute('loading', 'eager');
+      ifr.addEventListener('load', wire, { once: true });
+      if (srcText) ifr.srcdoc = srcText; else ifr.src = SRC;
+      view.insertBefore(ifr, hlv);
+    }
+    function reboot() {
+      return new Promise(res => {
+        dirty = false; ready = false; view.classList.remove('vlive');
+        const old = ifr; ifr = null;
+        setTimeout(() => {
+          old.remove(); mount();
+          const t = setInterval(() => { if (ready) { clearInterval(t); res(); } }, 50);
+          setTimeout(() => { clearInterval(t); res(); }, 4000);
+        }, 300);
+      });
+    }
+    async function boot() {
+      try { const r = await fetch(SRC); if (r.ok) srcText = await r.text(); } catch (e) { srcText = null; }
+      mount();
+    }
+    let booted = false;
+    new IntersectionObserver(([e]) => { if (e.isIntersecting && !booted) { booted = true; boot(); } }, { rootMargin: '900px 0px' }).observe(view);
+    new IntersectionObserver(([e]) => { inView = e.isIntersecting; startAuto(); }, { threshold: 0.25 }).observe(view);
+    new ResizeObserver(() => layout()).observe(view.parentElement);
+  })();
 
   /* ---------- scroll motion (content rests visible; motion only plays on arrival) ---------- */
   if (RM || !window.gsap || !window.ScrollTrigger) return;
@@ -1378,9 +1582,9 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
     onUpdate: s => { const p = s.progress; flow.style.setProperty('--p', p.toFixed(3)); steps.forEach((li, i) => li.classList.toggle('on', p >= i / (steps.length - 1) - 0.001)); } });
 
   /* 04 container scroll */
-  gsap.fromTo('#device', { rotateX: 20, scale: 0.92, y: 24 }, { rotateX: 0, scale: 1, y: 0, ease: 'none',
-    scrollTrigger: { trigger: '.stage', start: 'top 98%', end: 'top 35%', scrub: true } });
-  enter('#watch .watch-t, #watch li', { x: 24, opacity: 0, stagger: 0.09, duration: 0.7 }, '#watch');
+  gsap.fromTo('#frame', { rotateX: 16, scale: 0.9, y: 40 }, { rotateX: 0, scale: 1, y: 0, ease: 'none', transformPerspective: 1600,
+    scrollTrigger: { trigger: '#stage', start: 'top 100%', end: 'top 30%', scrub: true } });
+  enter('#watch .watch-t, #watch li', { y: 20, opacity: 0, stagger: 0.08, duration: 0.7 }, '#watch');
 
   /* 05 */
   enter('.factor', { y: 30, opacity: 0, stagger: 0.12 }, '.factors');
@@ -1418,6 +1622,11 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
   enter('.benefits > *', { y: 24, opacity: 0, stagger: 0.12 }, '.bf');
   enter('.vdiv', { scaleY: 0, transformOrigin: 'top', duration: 1.1 }, '.bf');
   enter('.road h3, .road li', { x: 24, opacity: 0, stagger: 0.1, duration: 0.7 }, '.road');
+  const rl = $('#roadList'), rli = $$('#roadList li');
+  ScrollTrigger.create({ trigger: rl, start: 'top 78%', end: 'bottom 60%', scrub: true,
+    onUpdate: s => { rl.style.setProperty('--p', s.progress.toFixed(3)); rli.forEach((li, i) => li.classList.toggle('on', s.progress >= i / (rli.length - 1) - 0.001)); } });
+  enter('.fv', { y: 14, opacity: 0, stagger: 0.12 }, '.factors');
+
 
   /* thank you */
   enter('.ty-top > *, .ty-hexa, .ty-names', { y: 24, opacity: 0, stagger: 0.12, duration: 0.9 }, '.thanks', 'top 70%');
