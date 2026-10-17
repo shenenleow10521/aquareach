@@ -29,7 +29,7 @@ No install, no build step. The prototype is one self-contained HTML file (it onl
 ```
 aquareach/
 ├── README.md                              ← you are here
-├── index.html                             ← redirects to the prototype (for GitHub Pages)
+├── index.html                             ← redirects to the website (web.html) on GitHub Pages
 ├── web.html                               ← website edition of the pitch deck
 ├── prototype/
 │   └── aquareach-dispatch-console.html    ← interactive dispatch console + simulation engine
@@ -153,7 +153,7 @@ for (const p of ['fcfs','nearest','aquareach']) {
 
 ### Put it online with GitHub Pages (optional)
 
-Settings → Pages → *Deploy from a branch* → `main` / root → Save. The console will then be at `https://<username>.github.io/<repo-name>/` (the root `index.html` redirects to the prototype).
+Live at https://shenenleow10521.github.io/aquareach/ (the root `index.html` redirects to `web.html`). The console is at `/prototype/aquareach-dispatch-console.html`. Every push to `main` redeploys automatically.
 
 ## 🗺️ Roadmap
 
