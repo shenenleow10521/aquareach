@@ -263,6 +263,9 @@ a{color:inherit}
 .loading i{width:12px;height:12px;border-radius:50%;border:2px solid rgba(107,184,242,.35);border-top-color:var(--sky);animation:rot .8s linear infinite}
 @keyframes rot{to{transform:rotate(360deg)}}
 .view.vlive .loading,.view.nolive .loading{display:none}
+.view.mob{height:min(78svh,720px)}
+.view.mob .ph{height:100%;object-fit:cover;object-position:0 0}
+.view.mob iframe{width:100%;height:100%}
 .hint{margin-top:16px;text-align:center;font-size:.95rem;color:rgba(212,235,252,.66)}
 .hint b{color:var(--white)}
 @media (max-width:900px){.watch ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -1575,13 +1578,14 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
 
     function layout() {
       if (!ready) return;
-      mob = view.clientWidth < 760;
+      mob = view.clientWidth < 760; view.classList.toggle('mob', mob);
+      const dw = Math.round(Math.max(1180, Math.min(DW, view.clientWidth * 1.25)));
       if (!mob) {
         ifr.setAttribute('scrolling', 'no');
         doc.documentElement.style.overflow = 'hidden';
-        ifr.style.width = DW + 'px';
+        ifr.style.width = dw + 'px';
         const H = Math.max(doc.documentElement.scrollHeight, doc.body.scrollHeight);
-        sc = view.clientWidth / DW;
+        sc = view.clientWidth / dw;
         ifr.style.height = H + 'px'; ifr.style.transform = `scale(${sc})`;
         view.style.height = (H * sc).toFixed(1) + 'px';
       } else {
