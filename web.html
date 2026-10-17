@@ -78,17 +78,17 @@ a{color:inherit}
 .bg{position:absolute;inset:0;overflow:hidden}
 .bg img{position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover;object-position:62% 50%}
 .shade{position:absolute;inset:0;pointer-events:none}
-.hero-in,.thanks-in{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding-block:calc(var(--hdr) + clamp(40px,8vw,128px)) clamp(44px,7vw,110px)}
-.hero h1{font-size:clamp(3.6rem,8.4vw,8.2rem);font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--white)}
+.hero-in,.thanks-in{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding-block:calc(var(--hdr) + clamp(32px,6vw,96px)) clamp(40px,6vw,88px)}
+.hero h1{font-size:clamp(3.4rem,7.2vw,7.4rem);font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--white)}
 @supports ((-webkit-background-clip:text) or (background-clip:text)){
   .liquid{color:transparent;-webkit-text-stroke:1.5px rgba(212,235,252,.55);
     background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 600' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffffff'/%3E%3Cstop offset='.22' stop-color='%23d4ebfc'/%3E%3Cstop offset='1' stop-color='%236bb8f2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 18 C70 0 140 0 210 18 S350 36 420 18 V600 H0Z' fill='url(%23g)'/%3E%3C/svg%3E") 0 -.16em / 4.2em 6em repeat-x;
     -webkit-background-clip:text;background-clip:text;animation:wx 5s linear infinite;filter:drop-shadow(0 0 28px rgba(107,184,242,.18))}
-  html.anim .liquid{animation:wx 5s linear infinite,fillup 2.6s cubic-bezier(.25,.7,.2,1) .25s both}
+  html.anim .liquid{animation:wx 5s linear infinite,fillup 2.6s cubic-bezier(.25,.7,.2,1) 1.1s both}
 }
 @keyframes wx{to{background-position-x:-4.2em}}
 @keyframes fillup{from{background-position-y:.98em}to{background-position-y:-.16em}}
-.hero-sub{margin-top:clamp(20px,3vw,40px);font-family:var(--disp);font-weight:700;font-size:clamp(1.3rem,2.45vw,2.25rem);line-height:1.2;max-width:21ch}
+.hero-sub{margin-top:clamp(16px,2.4vw,30px);font-family:var(--disp);font-weight:700;font-size:clamp(1.2rem,2.1vw,1.95rem);line-height:1.2;max-width:25ch}
 .hero-sub .w,.ty-tag .w{display:inline-block}
 .hero-team{font-size:clamp(1.05rem,1.55vw,1.4rem);color:rgba(255,255,255,.94)}
 .hero-team b,.ty-hexa b{font-weight:400;opacity:.8;margin-inline:.2em}
@@ -149,17 +149,28 @@ a{color:inherit}
 }
 
 /* 01 the disruption */
-.dis{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.85fr);gap:clamp(28px,5vw,80px);align-items:center;margin-top:clamp(28px,4vw,48px)}
+.dis{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(28px,5vw,80px);align-items:center;margin-top:clamp(28px,4vw,48px)}
 .sub3{font-family:var(--disp);font-weight:700;font-size:clamp(1.65rem,3vw,2.6rem);line-height:1.12;letter-spacing:-.01em;color:var(--ink);max-width:22ch}
 .lead{margin-top:clamp(20px,3vw,40px);font-size:clamp(1.15rem,1.9vw,1.6rem);line-height:1.38;color:var(--ink);max-width:32ch}
-.litre{position:relative;isolation:isolate;overflow:hidden;border-radius:22px;background:var(--navy);color:var(--white);text-align:center;padding:clamp(34px,4vw,54px) 24px clamp(38px,4.4vw,58px);box-shadow:0 30px 60px -32px rgba(11,37,64,.6)}
-.litre::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(280px circle at var(--mx,50%) var(--my,28%),rgba(107,184,242,.24),transparent 70%)}
-.litre .water{z-index:-1;height:15%;background:linear-gradient(180deg,rgba(107,184,242,.16),rgba(8,102,196,.32))}
-.litre .water svg{fill:rgba(107,184,242,.16)}
-.litre:hover .water{height:40%}
-.big{font-family:var(--disp);font-weight:800;font-size:clamp(4.6rem,9vw,7.4rem);line-height:.95;letter-spacing:-.02em;color:var(--sky);font-variant-numeric:tabular-nums}
-.per{margin-top:12px;font-weight:700;font-size:clamp(1.15rem,1.8vw,1.55rem)}
-.note{margin:16px auto 0;max-width:19ch;font-size:clamp(1rem,1.3vw,1.12rem);line-height:1.35;color:rgba(255,255,255,.92)}
+.litre{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(14px,2.2vw,28px);align-items:center;padding:clamp(20px,2.4vw,30px) clamp(20px,2.6vw,34px);border-radius:24px;background:linear-gradient(180deg,var(--white),#EEF6FC);border:1px solid var(--rule);box-shadow:0 34px 64px -38px rgba(11,37,64,.5)}
+.cyl{display:block;width:clamp(92px,8.6vw,124px);height:auto;overflow:visible}
+.cyl-glass{fill:rgba(231,242,250,.7)}
+.cyl-w{transform:translateY(var(--ly,48px))}
+.cyl-wave{animation:cw 2.2s linear infinite}
+@keyframes cw{to{transform:translateX(-50px)}}
+.cyl-b circle{fill:rgba(255,255,255,.75);animation:cb 3.2s ease-in infinite}
+@keyframes cb{0%{transform:translateY(0);opacity:0}20%{opacity:1}100%{transform:translateY(-170px);opacity:0}}
+.cyl-hi{fill:rgba(255,255,255,.45)}
+.ticks line{stroke:var(--ink);stroke-width:1.2}
+.ticks text{font:600 11px var(--body);fill:var(--slate);text-anchor:end}
+.cyl-edge{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+.cyl-base{fill:var(--ink)}
+.bench{stroke:var(--blue);stroke-width:1.6;stroke-dasharray:3 4}
+.litre-t{min-width:0}
+.big{font-family:var(--disp);font-weight:800;font-size:clamp(3.4rem,5.6vw,5.2rem);line-height:.95;white-space:nowrap;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--blue)}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){.big{background:linear-gradient(180deg,var(--sky),var(--blue) 70%);-webkit-background-clip:text;background-clip:text;color:transparent}}
+.per{margin-top:12px;font-family:var(--disp);font-weight:800;font-size:clamp(1.15rem,1.7vw,1.5rem);color:var(--ink)}
+.note{margin-top:10px;max-width:19ch;font-size:clamp(1rem,1.25vw,1.1rem);line-height:1.35;color:var(--slate)}
 .statement{margin-top:clamp(44px,6vw,80px);font-size:clamp(1.25rem,2.3vw,2rem);line-height:1.32;color:var(--ink);max-width:40ch}
 .source{margin-top:clamp(28px,4vw,52px);padding-top:16px;border-top:1px solid var(--rule);font-size:.95rem;color:var(--slate)}
 @media (max-width:760px){.dis{grid-template-columns:minmax(0,1fr)}}
@@ -325,6 +336,94 @@ a{color:inherit}
 .road li::before{content:counter(r) ".";font-variant-numeric:tabular-nums}
 @media (max-width:760px){.bf{grid-template-columns:minmax(0,1fr)}.vdiv{height:1px}}
 
+
+/* intro curtain */
+@property --ir{syntax:"<length>";inherits:false;initial-value:0px}
+#intro{display:none}
+html.anim #intro{display:block;position:fixed;inset:0;z-index:100;pointer-events:none;background:#020B16;-webkit-mask:radial-gradient(circle at 50% 54%,transparent var(--ir),#000 calc(var(--ir) + 1px));mask:radial-gradient(circle at 50% 54%,transparent var(--ir),#000 calc(var(--ir) + 1px));animation:irev 1.1s cubic-bezier(.7,0,.2,1) .78s forwards,ihide 0s linear 1.95s forwards}
+@keyframes irev{to{--ir:160vmax}}
+@keyframes ihide{to{visibility:hidden}}
+#intro .drop{position:absolute;left:50%;top:54%;width:16px;height:22px;margin:-22px 0 0 -8px;border-radius:50% 50% 50% 50% / 62% 62% 38% 38%;background:radial-gradient(circle at 35% 60%,#fff,var(--sky) 55%,var(--blue));box-shadow:0 0 24px 6px rgba(107,184,242,.55);animation:dropfall .72s cubic-bezier(.55,0,.9,.45) forwards}
+@keyframes dropfall{0%{transform:translateY(-46vh) scaleY(.85);opacity:0}12%{opacity:1}92%{transform:translateY(0) scaleY(1.1);opacity:1}100%{transform:translateY(4px) scale(1.6,.3);opacity:0}}
+#intro .rg{position:absolute;left:50%;top:54%;width:40px;height:14px;margin:-7px 0 0 -20px;border:1.5px solid var(--sky);border-radius:50%;opacity:0;animation:rg 1.1s ease-out .7s forwards}
+#intro .r2{animation-delay:.84s}
+@keyframes rg{0%{opacity:.9;transform:scale(.2)}100%{opacity:0;transform:scale(9)}}
+
+/* dispatcher panel in the opening */
+.hud{position:relative;margin-top:clamp(22px,3vw,40px);width:min(430px,100%);border-radius:16px;padding:14px 14px 12px;background:linear-gradient(180deg,rgba(13,49,87,.6),rgba(4,16,30,.7));border:1px solid rgba(107,184,242,.2);box-shadow:0 30px 60px -30px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,255,255,.06);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);font-size:13px;line-height:1.3}
+.hud::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a),transparent 0deg,transparent 240deg,var(--sky) 310deg,#fff 330deg,transparent 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 6s linear infinite;pointer-events:none}
+html.anim .hud{animation:hudin 1s cubic-bezier(.2,.8,.2,1) 2.7s both}
+@keyframes hudin{from{opacity:0;transform:translateY(20px)}}
+.hud-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.inc{display:inline-flex;align-items:center;gap:7px;min-width:0;padding:4px 10px;border-radius:999px;background:rgba(229,80,64,.14);border:1px solid rgba(229,80,64,.45);color:#FFB4A9;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inc b{color:#fff;font-weight:600}
+.inc i{flex:none;width:7px;height:7px;border-radius:50%;background:#FF6B5B;animation:blink 1.4s infinite}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sky)}
+.live i{width:7px;height:7px;border-radius:50%;background:var(--sky);animation:ping 1.6s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(107,184,242,.65)}100%{box-shadow:0 0 0 9px rgba(107,184,242,0)}}
+@keyframes blink{50%{opacity:.3}}
+.hud-h{margin-top:12px;font-family:var(--disp);font-weight:700;font-size:14px;color:var(--white)}
+.hud-q{--rh:52px;position:relative;list-style:none;margin:8px 0 0;padding:0;height:calc(var(--rh) * 3);overflow:hidden}
+.hq{position:absolute;left:0;right:0;top:0;height:calc(var(--rh) - 6px);display:grid;grid-template-columns:24px minmax(0,1fr) 8px;gap:10px;align-items:center;padding:0 10px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);transform:translateY(calc(var(--i,3) * var(--rh)));opacity:0;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .45s,background-color .4s,border-color .4s}
+.hq.show{opacity:1}
+.hq.first{background:rgba(107,184,242,.15);border-color:rgba(107,184,242,.55)}
+.rk{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-weight:700;font-size:12px;background:rgba(255,255,255,.08);color:var(--white);font-variant-numeric:tabular-nums}
+.hq.first .rk{background:var(--sky);color:var(--abyss)}
+.nm{min-width:0;display:flex;flex-direction:column;gap:3px}
+.nm b{font-weight:600;font-size:13px;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nm small{font-size:11.5px;color:rgba(212,235,252,.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+.mt{position:relative;width:8px;height:30px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden}
+.mt i{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(180deg,var(--sky),var(--blue));transition:height .4s}
+.hq.low .mt i{background:linear-gradient(180deg,#FFCD6E,#C8781E)}
+.hud-f{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:4px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08)}
+.tks{display:flex;gap:6px;flex-wrap:wrap}
+.tk{display:inline-flex;gap:5px;align-items:center;padding:3px 8px;border-radius:999px;font-size:11px;background:rgba(255,255,255,.06);color:rgba(212,235,252,.75);border:1px solid rgba(255,255,255,.08);white-space:nowrap;transition:background-color .3s,border-color .3s}
+.tk b{color:var(--white);font-weight:700}
+.tk.out{background:rgba(107,184,242,.2);border-color:rgba(107,184,242,.55);color:var(--white)}
+.hud-f em{font-style:normal;font-size:10.5px;color:rgba(212,235,252,.5);white-space:nowrap}
+@media (max-height:780px) and (min-width:761px){.hud-q{height:calc(var(--rh) * 2)}}
+@media (max-width:760px){.hud{padding:12px}.hud-q{height:var(--rh)}.hud-f em{display:none}.hud-h{margin-top:10px}}
+
+/* cursor ring */
+.cur{position:fixed;left:0;top:0;z-index:95;width:34px;height:34px;margin:-17px 0 0 -17px;border:1.5px solid rgba(107,184,242,.85);border-radius:50%;pointer-events:none;opacity:0;transition:width .25s,height .25s,margin .25s,background-color .25s,opacity .3s}
+.cur.on{opacity:1}
+.cur.big{width:58px;height:58px;margin:-29px 0 0 -29px;background:rgba(107,184,242,.12)}
+.cur-rip{position:fixed;z-index:95;width:12px;height:12px;margin:-6px 0 0 -6px;border:1.5px solid var(--sky);border-radius:50%;pointer-events:none;animation:crip .7s ease-out forwards}
+@keyframes crip{to{transform:scale(7);opacity:0}}
+
+/* chart bars catch the light */
+.bt i{overflow:hidden}
+.bt i::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);transform:translateX(-120%);animation:sheen 3.6s ease-in-out infinite}
+.row:nth-child(2) .bt i::after{animation-delay:.3s}.row:nth-child(3) .bt i::after{animation-delay:.6s}
+@keyframes sheen{60%,100%{transform:translateX(120%)}}
+
+/* dispatch-gap illustrations */
+.gill{display:block;width:100%;max-width:340px;height:auto;margin-bottom:clamp(14px,2vw,26px);overflow:visible}
+.gill .road{stroke:var(--rule);stroke-width:2;stroke-dasharray:4 5;fill:none}
+.gill .dep{fill:var(--mist);stroke:var(--blue);stroke-width:1.6}
+.gill .card{fill:var(--white);stroke:var(--rule);stroke-width:1.5}
+.gill .badge{fill:var(--ink)}
+.gill .bt{fill:var(--white);font:700 11px var(--body);text-anchor:middle}
+.gill .to{fill:none;stroke:var(--ink);stroke-width:1.5}
+.gill .tf{fill:var(--blue)}
+.gill .tf.e{fill:var(--ember)}
+.gill .late .to{stroke:var(--ember);animation:blink 1s steps(2) infinite}
+.gill .clk{fill:none;stroke:var(--ember);stroke-width:1.6;stroke-linecap:round}
+.gill .truck{fill:var(--blue)}
+.gill .scan{fill:none;stroke:var(--sky);stroke-width:1.5;transform-box:fill-box;transform-origin:center;animation:scan 3.5s ease-out infinite}
+@keyframes scan{0%{transform:scale(.1);opacity:.9}100%{transform:scale(1);opacity:0}}
+.gq1{animation:gq1 8s ease-out infinite}.gq2{animation:gq2 8s ease-out infinite}.gq3{animation:gq3 8s ease-out infinite}
+@keyframes gq1{0%,3%{opacity:0;transform:translateY(-10px)}8%,94%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes gq2{0%,15%{opacity:0;transform:translateY(-10px)}20%,94%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes gq3{0%,44%{opacity:0;transform:translateY(-10px)}49%,94%{opacity:1;transform:none}100%{opacity:0}}
+.gtruck1{animation:gt1 8s cubic-bezier(.5,0,.3,1) infinite}
+@keyframes gt1{0%,22%{transform:translateX(0)}36%,50%{transform:translateX(72px)}64%,82%{transform:translateX(146px)}96%,100%{transform:translateX(0)}}
+.gtruck2{animation:gt2 6s cubic-bezier(.5,0,.3,1) infinite}
+@keyframes gt2{0%,12%{transform:translateX(0)}34%,58%{transform:translateX(78px)}80%,100%{transform:translateX(0)}}
+.gclk{transform-box:fill-box;transform-origin:50% 100%;animation:tickc 1s steps(8) infinite}
+@keyframes tickc{to{transform:rotate(360deg)}}
+@media (max-width:760px){.gill{max-width:300px}}
+
 /* ---------- shared motion pieces ---------- */
 .edge{position:absolute;left:0;right:0;height:clamp(26px,3.6vw,52px);pointer-events:none;z-index:3;overflow:hidden}
 .edge svg{position:absolute;top:0;left:0;width:200%;height:100%}
@@ -336,9 +435,7 @@ a{color:inherit}
 .edge-t{top:-1px;transform:scaleY(-1)}
 .wm{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.1em;margin-bottom:-.1em}
 .wi{display:inline-block}
-/* 15 L card bubbles */
-.bub{position:absolute;bottom:6%;z-index:-1;width:7px;height:7px;border-radius:50%;border:1px solid rgba(212,235,252,.55);opacity:0;animation:rise 6.5s ease-in infinite}
-@keyframes rise{0%{transform:translateY(0) scale(.5);opacity:0}15%{opacity:.85}100%{transform:translateY(-260px) scale(1.25);opacity:0}}
+
 /* two tanks */
 .stmt{display:grid;grid-template-columns:minmax(0,1fr) clamp(190px,21vw,270px);gap:clamp(24px,4vw,64px);align-items:center;margin-top:clamp(44px,6vw,80px)}
 .stmt .statement{margin-top:0}
@@ -352,7 +449,7 @@ a{color:inherit}
 .lv2{animation:slow 10s ease-in-out infinite}
 .tk1{animation:dry 10s linear infinite}
 .alarm{fill:var(--ember);opacity:0;animation:alarm 10s linear infinite}
-.truck{fill:var(--blue);opacity:0;animation:truck 10s cubic-bezier(.5,0,.3,1) infinite}
+.pair .truck{fill:var(--blue);opacity:0;animation:truck 10s cubic-bezier(.5,0,.3,1) infinite}
 @keyframes fast{0%{transform:translateY(64px)}55%{transform:translateY(160px)}80%{transform:translateY(160px)}88%{transform:translateY(82px)}100%{transform:translateY(64px)}}
 @keyframes slow{0%{transform:translateY(58px)}80%{transform:translateY(72px)}90%{transform:translateY(60px)}100%{transform:translateY(58px)}}
 @keyframes dry{0%,52%{stroke:var(--ink)}56%,80%{stroke:var(--ember)}86%,100%{stroke:var(--ink)}}
@@ -400,6 +497,8 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
 </style>
 </head>
 <body>
+<div id="intro" aria-hidden="true"><span class="drop"></span><span class="rg"></span><span class="rg r2"></span></div>
+<div class="cur" id="cur" aria-hidden="true"></div>
 <header class="top" id="hdr">
   <div class="wrap bar">
     <a class="brand" href="#top" aria-label="AquaReach, back to top">
@@ -424,6 +523,12 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
     <div>
       <h1 id="heroTitle" class="liquid">AquaReach</h1>
       <p class="hero-sub" id="heroSub">Fair and explainable emergency water distribution</p>
+      <div class="hud" aria-hidden="true">
+        <div class="hud-top"><span class="inc"><i></i><b>Incident WS-0417</b> Trunk main burst</span><span class="live"><i></i>Live</span></div>
+        <p class="hud-h">Recommended next dispatches</p>
+        <ol class="hud-q" id="hudQ"></ol>
+        <div class="hud-f"><span class="tks" id="hudT"></span><em>Synthetic demo data</em></div>
+      </div>
     </div>
     <p class="hero-team">Team Hexa <b aria-hidden="true">•</b> Universiti Malaya</p>
   </div>
@@ -463,11 +568,24 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
           <p class="lead">Limited tankers make every dispatch decision consequential.</p>
         </div>
         <div class="litre" id="litre">
-          <span class="water" aria-hidden="true"><svg viewBox="0 0 200 12" preserveAspectRatio="none"><path d="M0 6 Q25 0 50 6 T100 6 T150 6 T200 6 V12 H0Z"/></svg></span>
-          <span aria-hidden="true"><span class="bub" style="left:14%;width:6px;height:6px;animation-delay:0s;animation-duration:6.2s"></span><span class="bub" style="left:27%;width:9px;height:9px;animation-delay:1.6s;animation-duration:7.4s"></span><span class="bub" style="left:41%;width:5px;height:5px;animation-delay:3.1s;animation-duration:5.6s"></span><span class="bub" style="left:58%;width:8px;height:8px;animation-delay:0.8s;animation-duration:6.8s"></span><span class="bub" style="left:70%;width:6px;height:6px;animation-delay:2.4s;animation-duration:6s"></span><span class="bub" style="left:82%;width:10px;height:10px;animation-delay:4s;animation-duration:7.8s"></span><span class="bub" style="left:50%;width:4px;height:4px;animation-delay:5s;animation-duration:5.2s"></span></span>
-          <p class="big"><span data-count="15">15</span> L</p>
-          <p class="per">per person per day</p>
-          <p class="note">Emergency essential-demand benchmark</p>
+          <svg class="cyl" viewBox="0 0 150 290" aria-hidden="true">
+            <defs>
+              <clipPath id="cylc"><path d="M44 22V258q0 10 10 10h42q10 0 10-10V22z"/></clipPath>
+              <linearGradient id="cylw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FCBF6"/><stop offset=".45" stop-color="#2F86D6"/><stop offset="1" stop-color="#0866C4"/></linearGradient>
+            </defs>
+            <path class="cyl-glass" d="M44 22V258q0 10 10 10h42q10 0 10-10V22z"/>
+            <g clip-path="url(#cylc)"><g class="cyl-w" id="cylW"><path class="cyl-wave" d="M0 0Q12.5-6 25 0T50 0T75 0T100 0T125 0T150 0T175 0T200 0T225 0T250 0V320H0Z" fill="url(#cylw)"/><g class="cyl-b"><circle cx="58" cy="200" r="2.2" style="animation-delay:0s"/><circle cx="72" cy="230" r="1.6" style="animation-delay:0.9s"/><circle cx="88" cy="215" r="2.6" style="animation-delay:1.7s"/><circle cx="66" cy="180" r="1.4" style="animation-delay:2.4s"/><circle cx="94" cy="240" r="1.8" style="animation-delay:0.5s"/></g></g></g>
+            <rect class="cyl-hi" x="49" y="30" width="7" height="226" rx="3.5"/>
+            <g class="ticks"><line x1="44" y1="258" x2="60" y2="258"/><text x="36" y="262">0</text><line x1="44" y1="244" x2="51" y2="244"/><line x1="44" y1="230" x2="51" y2="230"/><line x1="44" y1="216" x2="51" y2="216"/><line x1="44" y1="202" x2="51" y2="202"/><line x1="44" y1="188" x2="60" y2="188"/><text x="36" y="192">5</text><line x1="44" y1="174" x2="51" y2="174"/><line x1="44" y1="160" x2="51" y2="160"/><line x1="44" y1="146" x2="51" y2="146"/><line x1="44" y1="132" x2="51" y2="132"/><line x1="44" y1="118" x2="60" y2="118"/><text x="36" y="122">10</text><line x1="44" y1="104" x2="51" y2="104"/><line x1="44" y1="90" x2="51" y2="90"/><line x1="44" y1="76" x2="51" y2="76"/><line x1="44" y1="62" x2="51" y2="62"/><line x1="44" y1="48" x2="60" y2="48"/><text x="36" y="52">15</text></g>
+            <path class="cyl-edge" d="M36 22h78M44 22V258q0 10 10 10h42q10 0 10-10V22"/>
+            <rect class="cyl-base" x="30" y="272" width="90" height="8" rx="4"/>
+            <line class="bench" x1="106" y1="48" x2="150" y2="48"/>
+          </svg>
+          <div class="litre-t">
+            <p class="big"><span id="litreN">15</span> L</p>
+            <p class="per">per person per day</p>
+            <p class="note">Emergency essential-demand benchmark</p>
+          </div>
         </div>
       </div>
       <div class="stmt">
@@ -505,12 +623,26 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
       <h2>The dispatch gap</h2>
       <div class="gap">
         <div class="gcol gl">
+          <svg class="gill" viewBox="0 0 320 110" aria-hidden="true">
+            <path class="road" d="M34 92H300"/>
+            <path class="dep" d="M34 79l12 7v13l-12 7-12-7V86z"/>
+            <g class="gq1"><rect class="card" x="78" y="22" width="56" height="44" rx="9"/><rect class="to" x="98" y="32" width="16" height="26" rx="3"/><rect class="tf" x="99.5" y="34.5" width="13" height="22" rx="2"/><circle class="badge" cx="80" cy="22" r="9"/><text class="bt" x="80" y="26">1</text></g><g class="gq2"><rect class="card" x="152" y="22" width="56" height="44" rx="9"/><rect class="to" x="172" y="32" width="16" height="26" rx="3"/><rect class="tf" x="173.5" y="43.5" width="13" height="13" rx="2"/><circle class="badge" cx="154" cy="22" r="9"/><text class="bt" x="154" y="26">2</text></g><g class="gq3 late"><rect class="card" x="226" y="22" width="56" height="44" rx="9"/><rect class="to" x="246" y="32" width="16" height="26" rx="3"/><rect class="tf e" x="247.5" y="55.5" width="13" height="1" rx="2"/><circle class="badge" cx="228" cy="22" r="9"/><text class="bt" x="228" y="26">3</text><g transform="translate(266 10)"><circle class="clk" cx="0" cy="0" r="8"/><path class="clk gclk" d="M0 0V-5"/></g></g>
+            <g class="gtruck1"><rect class="truck" x="26" y="86" width="16" height="9" rx="2"/></g>
+          </svg>
           <h3 class="gt e">Complaint order</h3>
           <p class="gq">Who asked first?</p>
           <p class="gn">A request can arrive late.</p>
         </div>
         <div class="gdiv" aria-hidden="true"></div>
         <div class="gcol gr">
+          <svg class="gill" viewBox="0 0 320 110" aria-hidden="true">
+            <path class="road" d="M40 92H284"/>
+            <circle class="scan" cx="40" cy="92" r="110"/>
+            <path class="dep" d="M40 79l12 7v13l-12 7-12-7V86z"/>
+            <g transform="translate(110 30)"><rect class="to" x="0" y="2" width="22" height="34" rx="4"/><rect class="tf" x="2" y="5" width="18" height="29" rx="3"/></g>
+            <g class="late" transform="translate(262 30)"><rect class="to" x="0" y="2" width="22" height="34" rx="4"/><rect class="tf e" x="2" y="31" width="18" height="3" rx="1.5"/></g>
+            <g class="gtruck2"><rect class="truck" x="32" y="86" width="16" height="9" rx="2"/></g>
+          </svg>
           <h3 class="gt s">Nearest first</h3>
           <p class="gq">Who is closest?</p>
           <p class="gn">The nearest site may still have water.</p>
@@ -801,25 +933,29 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
   }));
 
   /* Opening: a live service area. Eight community tanks drain at their own pace; three tankers leave the
-     treatment plant for whichever tank will run out first (weighted for residents who need help carrying water). */
+     treatment plant for whichever tank will run out first (weighted for residents who need help carrying water).
+     The panel beside it is the dispatcher's ranked queue for the same simulation. */
   (() => {
     const hero = $('.hero');
-    const SITES = [['A',300,150,5000,7.2,.32],['B',640,190,4300,17.6,.10],['C',820,470,1300,6.4,.45],['D',560,420,3400,11.2,.05],
-                   ['E',150,400,4700,8.8,.24],['F',390,540,5300,19.2,.12],['G',880,120,2300,12.8,.22],['H',250,560,3800,8.0,.28]];
-    const S = SITES.map(([id, x, y, pop, store, v]) => {
-      const cap = pop * 15;
-      return { id, wx: (x - 470) / 11, wy: (330 - y) / 11, cap, L: Math.min(pop * store, cap), dem: pop * 15 / 24, v, r: 1.45 + pop / 5500, tgt: 0, rip: [], shown: 0, dry: 0 };
+    const SITES = [['A',300,150,5000,7.2,.32,'Rumah Pangsa Seri Cempaka'],['B',640,190,4300,17.6,.10,'Taman Mutiara Hijau'],
+                   ['C',820,470,1300,6.4,.45,'Pangsapuri Sri Kasih'],['D',560,420,3400,11.2,.05,'Kolej Kediaman Bestari'],
+                   ['E',150,400,4700,8.8,.24,'Pangsapuri Delima'],['F',390,540,5300,19.2,.12,'Taman Saujana Permai'],
+                   ['G',880,120,2300,12.8,.22,'Kampung Baru Sentosa'],['H',250,560,3800,8.0,.28,'Flat Sri Kenanga']];
+    const S = SITES.map(([id, x, y, pop, store, v, name]) => {
+      const cap = pop * 15, km = Math.hypot(x - 470, y - 330) * 0.042 * 1.3 + 1;
+      return { id, name, wx: (x - 470) / 11, wy: (330 - y) / 11, cap, L: Math.min(pop * store, cap), dem: pop * 15 / 24, v,
+        r: 1.45 + pop / 5500, tgt: 0, rip: [], shown: 0, dry: 0, mins: Math.round(km / 25 * 60) };
     });
     S.forEach(s => { s.d = Math.hypot(s.wx, s.wy); s.shown = s.L / s.cap; });
     const H = 8, K = 0.48, SP = 0.9;
-    const T = [0, 1, 2].map(i => ({ st: 'idle', wait: 0.2 + i * 0.7, trail: [] }));
+    const T = [0, 1, 2].map(i => ({ id: 'T' + (i + 1), st: 'idle', wait: 0.2 + i * 0.7, trail: [] }));
     const HS = 4.4, R = 11, HEX = [];
     for (let q = -R; q <= R; q++) for (let r = -R; r <= R; r++) {
       if (Math.abs(q + r) > R) continue;
-      const x = HS * Math.sqrt(3) * (q + r / 2), y = HS * 1.5 * r;
-      if (Math.hypot(x, y) > 62) continue;
+      const x = HS * Math.sqrt(3) * (q + r / 2), y = HS * 1.5 * r, d = Math.hypot(x, y);
+      if (d > 62) continue;
       const p = []; for (let k = 0; k < 6; k++) { const a = (60 * k + 30) * Math.PI / 180; p.push([x + HS * Math.cos(a), y + HS * Math.sin(a)]); }
-      HEX.push(p);
+      HEX.push({ p, d });
     }
     const CP = [[-80,9],[-43,7],[-13,4.5],[13.6,2.7],[30,-8],[49,-2.7],[85,0]], RIV = [];
     for (let i = 0; i < CP.length - 1; i++) {
@@ -831,18 +967,15 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
     }
     RIV.push(CP[CP.length - 1]);
     const FL = Array.from({ length: 90 }, () => ({ u: Math.random(), s: 0.012 + Math.random() * 0.02, o: (Math.random() - 0.5) * 2.4 }));
-    let cam = {}, mx = 0, my = 0, tmx = 0, tmy = 0, last = 0;
+    let cam = {}, mx = 0, my = 0, tmx = 0, tmy = 0, last = 0, ranked = [];
     hero.addEventListener('pointermove', e => { const r = hero.getBoundingClientRect(); tmx = (e.clientX - r.left) / r.width - 0.5; tmy = (e.clientY - r.top) / r.height - 0.5; });
     hero.addEventListener('pointerleave', () => { tmx = 0; tmy = 0; });
     const P = (x, y, z) => {
       const xr = x * cam.c - y * cam.s, yr = x * cam.s + y * cam.c, dep = cam.D + yr * cam.ct - z * cam.st, k = cam.f / dep;
       return [cam.cx + xr * k, cam.cy - (yr * cam.st + z * cam.ct) * k, dep, k];
     };
-    const pick = () => {
-      let best = null, bk = 1e9;
-      for (const s of S) { if (s.tgt || s.L > 0.8 * s.cap) continue; const key = (s.L / s.dem) / (1 + 2 * s.v) - s.dry * 1.5 + 0.12 * s.d; if (key < bk) { bk = key; best = s; } }
-      return best;
-    };
+    const keyOf = s => (s.L / s.dem) / (1 + 2 * s.v) - s.dry * 1.5 + 0.12 * s.d;
+    const rank = () => S.filter(s => !s.tgt && s.L <= 0.8 * s.cap).sort((a, b) => keyOf(a) - keyOf(b));
     const step = dt => {
       for (const s of S) {
         s.L = Math.max(0, s.L - s.dem * K * SP * dt); s.dry = s.L <= 0 ? s.dry + dt : 0;
@@ -850,7 +983,7 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
         s.rip.forEach(r => { r.t += dt; }); s.rip = s.rip.filter(r => r.t < 1.8);
       }
       for (const k of T) {
-        if (k.st === 'idle') { k.wait -= dt; if (k.wait <= 0) { const s = pick(); if (s) { s.tgt = 1; k.s = s; k.st = 'out'; k.t = 0; k.dur = 1.3 + s.d / 13; } else k.wait = 0.8; } }
+        if (k.st === 'idle') { k.wait -= dt; if (k.wait <= 0) { const s = rank()[0]; if (s) { s.tgt = 1; k.s = s; k.st = 'out'; k.t = 0; k.dur = 1.3 + s.d / 13; } else k.wait = 0.8; } }
         else {
           k.t += dt / k.dur;
           if (k.t >= 1) {
@@ -861,6 +994,38 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
       }
     };
     for (let i = 0; i < 1350; i++) step(1 / 30);
+    T.forEach(k => { k.trail.length = 0; });
+
+    /* the dispatcher's panel */
+    const Q = $('#hudQ'), TK = $('#hudT'), rows = {};
+    S.forEach(s => {
+      const li = document.createElement('li'); li.className = 'hq';
+      li.innerHTML = `<span class="rk"></span><span class="nm"><b>${s.id} · ${s.name}</b><small></small></span><span class="mt"><i></i></span>`;
+      Q.appendChild(li); rows[s.id] = li;
+    });
+    TK.innerHTML = T.map(k => `<span class="tk" data-k="${k.id}"><b>${k.id}</b><span></span></span>`).join('');
+    const tkEls = $$('.tk', TK);
+    let lastUI = -1;
+    const updateUI = () => {
+      ranked = rank();
+      S.forEach(s => {
+        const li = rows[s.id], i = ranked.indexOf(s), h = s.L / s.dem;
+        li.style.setProperty('--i', i < 0 || i > 2 ? 3 : i);
+        li.classList.toggle('show', i >= 0 && i <= 2); li.classList.toggle('first', i === 0);
+        li.classList.toggle('low', s.L / s.cap < 0.22);
+        $('.rk', li).textContent = i >= 0 ? i + 1 : '';
+        $('small', li).textContent = (s.L <= 0 ? `Dry for ${s.dry.toFixed(1)} h` : `Runs out in ${(h * 0.8).toFixed(1)}–${(h * 1.2).toFixed(1)} h`) +
+          (s.v >= 0.2 ? ` · ${Math.round(s.v * 100)}% need help carrying water` : '') + ` · ${s.mins} min away`;
+        $('.mt i', li).style.height = `${Math.max(3, Math.min(100, s.L / s.cap * 100)).toFixed(0)}%`;
+      });
+      T.forEach((k, i) => {
+        const el = tkEls[i], sp = $('span', el);
+        el.className = 'tk ' + k.st;
+        sp.textContent = k.st === 'out' ? `→ ${k.s.id}` : k.st === 'back' ? 'Returning' : 'Refilling';
+      });
+    };
+    updateUI();
+
     const N = 28;
     const ring = (s, z, rr = s.r) => { const a = []; for (let i = 0; i < N; i++) { const an = i / N * 6.2832; a.push(P(s.wx + Math.cos(an) * rr, s.wy + Math.sin(an) * rr, z)); } return a; };
     const hull = pts => {
@@ -871,28 +1036,51 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
       for (let i = p.length - 1; i >= 0; i--) { const q = p[i]; while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], q) <= 0) up.pop(); up.push(q); }
       up.pop(); lo.pop(); return lo.concat(up);
     };
+    const ease = x => 1 - Math.pow(1 - Math.max(0, Math.min(1, x)), 3);
+    const lerp = (a, b, q) => a + (b - a) * q;
+
     animateCanvas($('#scene'), null, ({ ctx, w, h }, t) => {
       const dt = Math.min(0.05, Math.max(0, t - last)); last = t;
-      if (!RM) step(dt);
+      const q = RM ? 1 : ease((t - 0.8) / 2.8);
+      if (!RM && q > 0.85) step(dt);
+      if (t - lastUI > 0.3 || RM) { lastUI = t; updateUI(); }
       mx += (tmx - mx) * 0.04; my += (tmy - my) * 0.04;
       const mob = w < 760, sp = Math.min(1, Math.max(0, scrollY / (hero.offsetHeight || 1)));
-      const yaw = -0.22 + Math.sin(t * 0.05) * 0.12 + mx * 0.28, tilt = 0.6 + my * 0.08 + sp * 0.42;
+      const yaw = lerp(-1.25, -0.22 + Math.sin(t * 0.05) * 0.12 + mx * 0.28, q), tilt = lerp(1.32, 0.6 + my * 0.08 + sp * 0.42, q);
       cam = { c: Math.cos(yaw), s: Math.sin(yaw), ct: Math.cos(tilt), st: Math.sin(tilt), D: 170,
-        f: (mob ? w * 2.9 : Math.min(w * 1.46, h * 2.5)) * (1 + sp * 0.22), cx: w * (mob ? 0.5 : 0.66), cy: h * (mob ? 0.67 : 0.58) };
-      const poly = pts => { ctx.beginPath(); pts.forEach((q, i) => i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1])); ctx.closePath(); };
+        f: (mob ? w * 2.7 : Math.min(w * 1.3, h * 2.25)) * (1 + sp * 0.22) * lerp(2.3, 1, q),
+        cx: w * (mob ? 0.5 : 0.7), cy: h * (mob ? 0.73 : 0.56) };
+      const poly = pts => { ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); };
       ctx.clearRect(0, 0, w, h);
-      const o = P(0, 0, 0);
+      const o = P(0, 0, 0), reveal = q * 72;
       const glow = ctx.createRadialGradient(o[0], o[1], 0, o[0], o[1], cam.f * 0.6);
-      glow.addColorStop(0, 'rgba(8,102,196,.26)'); glow.addColorStop(1, 'rgba(8,102,196,0)');
+      glow.addColorStop(0, `rgba(8,102,196,${0.28 * q})`); glow.addColorStop(1, 'rgba(8,102,196,0)');
       ctx.fillStyle = glow; ctx.fillRect(0, 0, w, h);
+
+      /* sonar scan: a ring sweeps out from the treatment plant and lights the cells it crosses */
+      const sc = t > 3.2 ? ((t - 3.2) % 4.6) / 4.6 : -1, SR = sc * 74;
+      if (sc >= 0) {
+        ctx.save(); ctx.globalCompositeOperation = 'lighter';
+        for (const hx of HEX) {
+          const b = Math.exp(-Math.pow((hx.d - SR) / 4.2, 2)) * (1 - sc);
+          if (b < 0.03 || hx.d > reveal) continue;
+          poly(hx.p.map(v => P(v[0], v[1], 0))); ctx.fillStyle = `rgba(107,184,242,${(0.2 * b).toFixed(3)})`; ctx.fill();
+        }
+        ctx.restore();
+      }
       const gs = ctx.createRadialGradient(o[0], o[1], 0, o[0], o[1], cam.f * 0.62);
       gs.addColorStop(0, 'rgba(107,184,242,.30)'); gs.addColorStop(0.55, 'rgba(107,184,242,.09)'); gs.addColorStop(1, 'rgba(107,184,242,0)');
       ctx.beginPath();
-      for (const hx of HEX) { hx.forEach((v, i) => { const q = P(v[0], v[1], 0); i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }); ctx.closePath(); }
+      for (const hx of HEX) { if (hx.d > reveal) continue; hx.p.forEach((v, i) => { const p = P(v[0], v[1], 0); i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.closePath(); }
       ctx.strokeStyle = gs; ctx.lineWidth = 1; ctx.stroke();
-      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      if (sc >= 0) {
+        poly(Array.from({ length: 64 }, (_, i) => P(Math.cos(i / 64 * 6.2832) * SR, Math.sin(i / 64 * 6.2832) * SR, 0)));
+        ctx.strokeStyle = `rgba(160,215,250,${(0.45 * (1 - sc)).toFixed(3)})`; ctx.lineWidth = 1.2; ctx.stroke();
+      }
+
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = q;
       const rv = RIV.map(([x, y]) => P(x, y, 0));
-      ctx.beginPath(); rv.forEach((q, i) => i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]));
+      ctx.beginPath(); rv.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]));
       ctx.lineJoin = 'round'; ctx.lineCap = 'round';
       ctx.strokeStyle = 'rgba(107,184,242,.07)'; ctx.lineWidth = mob ? 12 : 22; ctx.stroke();
       ctx.strokeStyle = 'rgba(107,184,242,.12)'; ctx.lineWidth = mob ? 5 : 8; ctx.stroke();
@@ -902,50 +1090,65 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
         if (!RM) f.u = (f.u + f.s * dt) % 1;
         const fi = f.u * (RIV.length - 1), i0 = Math.floor(fi), fr = fi - i0, a = RIV[i0], b = RIV[Math.min(RIV.length - 1, i0 + 1)];
         const tx = b[0] - a[0], ty = b[1] - a[1], tl = Math.hypot(tx, ty) || 1;
-        const q = P(a[0] + tx * fr - ty / tl * f.o, a[1] + ty * fr + tx / tl * f.o, 0);
-        ctx.fillRect(q[0] - 0.8, q[1] - 0.8, 1.6, 1.6);
+        const p = P(a[0] + tx * fr - ty / tl * f.o, a[1] + ty * fr + tx / tl * f.o, 0);
+        ctx.fillRect(p[0] - 0.8, p[1] - 0.8, 1.6, 1.6);
       }
       ctx.restore();
+
       ctx.setLineDash([2, 6]);
       for (const s of S) {
+        if (s.d > reveal) continue;
         const b = P(s.wx, s.wy, 0); ctx.beginPath(); ctx.moveTo(o[0], o[1]); ctx.lineTo(b[0], b[1]);
-        ctx.strokeStyle = s.tgt ? 'rgba(160,215,250,.6)' : 'rgba(107,184,242,.14)'; ctx.lineWidth = s.tgt ? 1.4 : 1; ctx.stroke();
+        ctx.strokeStyle = s.tgt ? 'rgba(160,215,250,.65)' : 'rgba(107,184,242,.14)'; ctx.lineWidth = s.tgt ? 1.4 : 1; ctx.stroke();
       }
       ctx.setLineDash([]);
       const dep = []; for (let k = 0; k < 6; k++) { const a = (60 * k + 30) * Math.PI / 180; dep.push(P(Math.cos(a) * 2.8, Math.sin(a) * 2.8, 0)); }
-      poly(dep); ctx.fillStyle = 'rgba(107,184,242,.2)'; ctx.fill(); ctx.strokeStyle = 'rgba(212,235,252,.85)'; ctx.lineWidth = 1.3; ctx.stroke();
-      const b1 = P(0, 0, 16), bm = ctx.createLinearGradient(o[0], o[1], b1[0], b1[1]);
-      bm.addColorStop(0, 'rgba(160,215,250,.7)'); bm.addColorStop(1, 'rgba(107,184,242,0)');
+      poly(dep); ctx.fillStyle = 'rgba(107,184,242,.22)'; ctx.fill(); ctx.strokeStyle = 'rgba(212,235,252,.9)'; ctx.lineWidth = 1.3; ctx.stroke();
+      const b1 = P(0, 0, 18 * q), bm = ctx.createLinearGradient(o[0], o[1], b1[0], b1[1]);
+      bm.addColorStop(0, 'rgba(160,215,250,.75)'); bm.addColorStop(1, 'rgba(107,184,242,0)');
       ctx.strokeStyle = bm; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(o[0], o[1]); ctx.lineTo(b1[0], b1[1]); ctx.stroke();
+
       for (const s of S) for (const r of s.rip) {
         const rad = s.r + r.t * 4.5; poly(Array.from({ length: 24 }, (_, i) => P(s.wx + Math.cos(i / 24 * 6.2832) * rad, s.wy + Math.sin(i / 24 * 6.2832) * rad, 0)));
         ctx.strokeStyle = `rgba(160,215,250,${0.75 * (1 - r.t / 1.8)})`; ctx.lineWidth = 1.3; ctx.stroke();
       }
+      /* the dispatcher's top pick gets a turning ring */
+      const top1 = ranked[0];
+      if (top1 && q > 0.9) {
+        const rr = top1.r * 2.6, rot = t * 0.8;
+        ctx.setLineDash([6, 6]); ctx.lineDashOffset = -t * 18;
+        poly(Array.from({ length: 40 }, (_, i) => P(top1.wx + Math.cos(i / 40 * 6.2832 + rot) * rr, top1.wy + Math.sin(i / 40 * 6.2832 + rot) * rr, 0)));
+        ctx.strokeStyle = 'rgba(160,215,250,.85)'; ctx.lineWidth = 1.4; ctx.stroke(); ctx.setLineDash([]); ctx.lineDashOffset = 0;
+      }
       for (const k of T) {
-        if (k.st === 'idle') continue;
+        if (k.st === 'idle' || q < 0.85) continue;
         const s = k.s, tt = k.st === 'out' ? k.t : 1 - k.t, e = tt < 0.5 ? 2 * tt * tt : 1 - Math.pow(-2 * tt + 2, 2) / 2;
-        const q = P(s.wx * e, s.wy * e, Math.sin(Math.PI * e) * 2.6 + 0.3), full = k.st === 'out';
-        if (!RM || !k.trail.length) { k.trail.push([q[0], q[1]]); if (k.trail.length > 22) k.trail.shift(); }
+        const p = P(s.wx * e, s.wy * e, Math.sin(Math.PI * e) * 2.6 + 0.3), full = k.st === 'out';
+        if (!RM || !k.trail.length) { k.trail.push([p[0], p[1]]); if (k.trail.length > 22) k.trail.shift(); }
         for (let i = 1; i < k.trail.length; i++) {
           const a = k.trail[i - 1], b = k.trail[i]; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]);
           ctx.strokeStyle = full ? `rgba(225,242,255,${i / k.trail.length * 0.85})` : `rgba(107,184,242,${i / k.trail.length * 0.35})`;
           ctx.lineWidth = full ? 2.6 : 1.2; ctx.stroke();
         }
-        const rr = full ? 20 : 9, g = ctx.createRadialGradient(q[0], q[1], 0, q[0], q[1], rr);
+        const rr = full ? 20 : 9, g = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], rr);
         g.addColorStop(0, full ? 'rgba(255,255,255,.98)' : 'rgba(160,215,250,.6)'); g.addColorStop(0.28, full ? 'rgba(107,184,242,.65)' : 'rgba(107,184,242,.25)'); g.addColorStop(1, 'rgba(107,184,242,0)');
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(q[0], q[1], rr, 0, 6.2832); ctx.fill();
-        if (full) { ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(q[0], q[1], 2.4, 0, 6.2832); ctx.fill(); }
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p[0], p[1], rr, 0, 6.2832); ctx.fill();
+        if (full) {
+          ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(p[0], p[1], 2.4, 0, 6.2832); ctx.fill();
+          ctx.font = '700 10px "Hanken Grotesk",system-ui,sans-serif'; ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(212,235,252,.9)'; ctx.fillText(k.id, p[0] + 9, p[1] - 8);
+        }
       }
       const order = S.map(s => ({ s, d: P(s.wx, s.wy, 0)[2] })).sort((a, b) => b.d - a.d);
       for (const { s } of order) {
-        const lvl = Math.max(0, Math.min(1, s.shown)), low = lvl < 0.22, dry = s.L <= 0;
-        const bot = ring(s, 0), top = ring(s, H);
+        const grow = RM ? 1 : ease(q * 1.8 - s.d / 50 - 0.1); if (grow <= 0.01) continue;
+        const lvl = Math.max(0, Math.min(1, s.shown)), low = lvl < 0.22, dry = s.L <= 0, Hs = H * grow;
+        const bot = ring(s, 0), top = ring(s, Hs);
         poly(ring(s, 0, s.r * 2.2)); ctx.fillStyle = dry ? 'rgba(255,93,79,.12)' : low ? 'rgba(242,181,68,.10)' : 'rgba(107,184,242,.10)'; ctx.fill();
         if (dry) { const ph = (t * 1.1) % 1; poly(ring(s, 0, s.r * (1.4 + ph * 2.4))); ctx.strokeStyle = `rgba(255,93,79,${0.85 * (1 - ph)})`; ctx.lineWidth = 1.3; ctx.stroke(); }
         poly(hull(bot.concat(top))); ctx.fillStyle = 'rgba(107,184,242,.06)'; ctx.fill();
         ctx.strokeStyle = dry ? 'rgba(255,93,79,.6)' : 'rgba(212,235,252,.3)'; ctx.lineWidth = 1; ctx.stroke();
         if (lvl > 0.004) {
-          const fr = ring(s, H * lvl), hl = hull(bot.concat(fr)); let y0 = 1e9, y1 = -1e9; hl.forEach(q => { y0 = Math.min(y0, q[1]); y1 = Math.max(y1, q[1]); });
+          const fr = ring(s, Hs * lvl), hl = hull(bot.concat(fr)); let y0 = 1e9, y1 = -1e9; hl.forEach(p => { y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]); });
           const g = ctx.createLinearGradient(0, y0, 0, y1);
           if (low) { g.addColorStop(0, 'rgba(255,205,110,.92)'); g.addColorStop(1, 'rgba(200,120,30,.45)'); }
           else { g.addColorStop(0, 'rgba(150,210,250,.94)'); g.addColorStop(1, 'rgba(8,90,180,.5)'); }
@@ -957,10 +1160,14 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
       }
       ctx.textAlign = 'center'; ctx.font = '700 11px "Hanken Grotesk",system-ui,sans-serif';
       for (const { s } of order) {
-        const q = P(s.wx, s.wy, H + 1.8), dry = s.L <= 0, pw = 22, ph = 18;
-        ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(q[0] - pw / 2, q[1] - ph, pw, ph, 9); else ctx.rect(q[0] - pw / 2, q[1] - ph, pw, ph);
-        ctx.fillStyle = dry ? 'rgba(229,80,64,.92)' : 'rgba(4,16,30,.78)'; ctx.fill(); ctx.strokeStyle = 'rgba(212,235,252,.35)'; ctx.lineWidth = 1; ctx.stroke();
-        ctx.fillStyle = '#fff'; ctx.fillText(s.id, q[0], q[1] - 5);
+        if (q < 0.7) continue;
+        const p = P(s.wx, s.wy, H + 1.8), dry = s.L <= 0, isTop = s === top1, pw = isTop ? 34 : 22, ph = 18;
+        ctx.globalAlpha = Math.min(1, (q - 0.7) / 0.3);
+        ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(p[0] - pw / 2, p[1] - ph, pw, ph, 9); else ctx.rect(p[0] - pw / 2, p[1] - ph, pw, ph);
+        ctx.fillStyle = dry ? 'rgba(229,80,64,.92)' : isTop ? 'rgba(107,184,242,.95)' : 'rgba(4,16,30,.78)'; ctx.fill();
+        ctx.strokeStyle = 'rgba(212,235,252,.35)'; ctx.lineWidth = 1; ctx.stroke();
+        ctx.fillStyle = isTop ? '#061A2F' : '#fff'; ctx.fillText(isTop ? `1 · ${s.id}` : s.id, p[0], p[1] - 5);
+        ctx.globalAlpha = 1;
       }
     });
   })();
@@ -1021,6 +1228,18 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
     });
   })();
 
+  /* cursor ring with a ripple on click (mouse only) */
+  (() => {
+    const c = $('#cur'); if (RM || !matchMedia('(pointer: fine)').matches) return;
+    let x = -100, y = -100, cx = -100, cy = -100;
+    addEventListener('mousemove', e => { x = e.clientX; y = e.clientY; c.classList.add('on'); }, { passive: true });
+    document.addEventListener('mouseleave', () => c.classList.remove('on'));
+    document.addEventListener('mouseover', e => c.classList.toggle('big', !!e.target.closest('a,button,.hex,.litre')));
+    addEventListener('mousedown', e => { const r = document.createElement('span'); r.className = 'cur-rip'; r.style.left = e.clientX + 'px'; r.style.top = e.clientY + 'px'; document.body.appendChild(r); setTimeout(() => r.remove(), 750); });
+    const loop = () => { cx += (x - cx) * 0.2; cy += (y - cy) * 0.2; c.style.transform = `translate3d(${cx.toFixed(1)}px,${cy.toFixed(1)}px,0)`; requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+  })();
+
   /* Tagline band: drifts on its own, speeds up and leans with scroll */
   (() => {
     const tr = $('#mtrack'); if (!tr || RM) return;
@@ -1075,11 +1294,6 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
       });
       hx.addEventListener('pointerleave', () => { t.style.transform = ''; });
     });
-    const lit = $('#litre');
-    lit.addEventListener('pointermove', e => {
-      const r = lit.getBoundingClientRect();
-      lit.style.setProperty('--mx', `${e.clientX - r.left}px`); lit.style.setProperty('--my', `${e.clientY - r.top}px`);
-    });
   }
 
   /* ---------- prototype "watch for" ---------- */
@@ -1117,8 +1331,8 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
   };
 
   /* opening sequence */
-  gsap.fromTo(words($('#heroSub')), { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.8, stagger: 0.07, delay: 0.9, ease: 'power2.out' });
-  gsap.from('.hero-team', { y: 16, opacity: 0, duration: 0.8, delay: 1.5 });
+  gsap.fromTo(words($('#heroSub')), { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.8, stagger: 0.07, delay: 1.6, ease: 'power2.out' });
+  gsap.from('.hero-team', { y: 16, opacity: 0, duration: 0.8, delay: 2.3 });
   gsap.to('.hero-in', { yPercent: -10, opacity: 0.2, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
 
   /* team */
@@ -1138,13 +1352,21 @@ html.motion .steps li:not(.on) .ico path{stroke-dashoffset:1}
   /* 01 */
   enter('.dis-l > *', { y: 22, opacity: 0, stagger: 0.12 }, '.dis');
   enter('#litre', { y: 30, scale: 0.95, opacity: 0, duration: 1 }, '.dis');
-  gsap.from('#litre .water', { height: '0%', duration: 1.8, ease: 'power2.out', immediateRender: false, clearProps: 'height', scrollTrigger: { trigger: '#litre', start: 'top 90%', once: true } });
+  const cylW = $('#cylW'), litreN = $('#litreN');
+  ScrollTrigger.create({ trigger: '#litre', start: 'top 88%', once: true, onEnter: () => {
+    const o = { v: 0 };
+    gsap.to(o, { v: 15, duration: 2.4, ease: 'power2.inOut', onUpdate: () => { cylW.style.setProperty('--ly', `${258 - 14 * o.v}px`); litreN.textContent = Math.round(o.v); },
+      onComplete: () => { litreN.textContent = '15'; } });
+  } });
   enter('.statement', { y: 22, opacity: 0 }, '.stmt');
   enter('.pair', { scale: 0.85, opacity: 0, duration: 1 }, '.stmt');
   enter('.source', { opacity: 0 });
 
+  $$('.ghost').forEach(g => gsap.to(g, { yPercent: -40, ease: 'none', scrollTrigger: { trigger: g.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }));
+
   /* 02 */
   enter('.gl', { x: -40, opacity: 0 }, '.gap');
+  enter('.gill', { y: 20, opacity: 0, stagger: 0.15 }, '.gap');
   enter('.gr', { x: 40, opacity: 0 }, '.gap');
   enter('.gdiv', { scaleY: 0, transformOrigin: 'top', duration: 1.1 }, '.gap');
   enter('.missing', { y: 24, opacity: 0, duration: 0.9 });
