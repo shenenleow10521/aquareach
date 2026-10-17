@@ -14,6 +14,7 @@ Track A: Technology & Engineering Solutions · Smart Water & Digital Innovation
 
 | I want to… | Open this |
 |---|---|
+| Browse the website edition of the pitch | [`web.html`](web.html): scroll-through version of the pitch deck (opens online at `/web.html` on GitHub Pages) |
 | Try the working prototype | [`prototype/aquareach-dispatch-console.html`](prototype/aquareach-dispatch-console.html): download it and double-click to open in any browser, then press **Guided demo** |
 | Read the written submission | [`docs/AquaReach_Proposal.pdf`](docs/AquaReach_Proposal.pdf) |
 | See the poster (A1) | [`docs/AquaReach_Poster_A1.pdf`](docs/AquaReach_Poster_A1.pdf) |
@@ -29,6 +30,7 @@ No install, no build step. The prototype is one self-contained HTML file (it onl
 aquareach/
 ├── README.md                              ← you are here
 ├── index.html                             ← redirects to the prototype (for GitHub Pages)
+├── web.html                               ← website edition of the pitch deck
 ├── prototype/
 │   └── aquareach-dispatch-console.html    ← interactive dispatch console + simulation engine
 ├── docs/
@@ -37,6 +39,7 @@ aquareach/
 ├── media/
 │   └── AquaReach_Pitch_Video.mp4          ← pitch video (2:58, 1920×1080, ~84 MB)
 └── assets/
+    ├── web/                               ← images used by web.html
     ├── poster-preview.png                 ← small poster image used in this README
     └── video-thumbnail.jpg                ← video still used in this README
 ```
